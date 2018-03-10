@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "617743387856",
+    "firebase_url": "https://financialapp-e2dff.firebaseio.com",
+    "project_id": "financialapp-e2dff",
+    "storage_bucket": "financialapp-e2dff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617743387856:android:2c7ec8a6997aff2f",
+        "android_client_info": {
+          "package_name": "cz.utb.fai.dodo.financialapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617743387856-cuev0ou2bchpgpssrlq30605mpcav75c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cz.utb.fai.dodo.financialapp",
+            "certificate_hash": "3e36345129f597e51f7d25c7fadd02b03a9300a4"
+          }
+        },
+        {
+          "client_id": "617743387856-daiaq2g5ct605q3v04i2eb3o2m3ajd5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIcitii_T-hLUlWWQhQA5h2QU3RN45zWY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617743387856-daiaq2g5ct605q3v04i2eb3o2m3ajd5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

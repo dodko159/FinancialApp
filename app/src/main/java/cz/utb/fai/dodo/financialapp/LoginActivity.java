@@ -1,9 +1,12 @@
 package cz.utb.fai.dodo.financialapp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -24,12 +27,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import cz.utb.fai.dodo.financialapp.databinding.ActivityLoginBinding;
+
 public class LoginActivity extends AppCompatActivity {
 
     SignInButton signInButton;
+    View progressBarLayout;
     FirebaseAuth mAuth;
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth.AuthStateListener mAuthListener;
+    ActivityLoginBinding activityBinding;
 
     FirebaseUser user;
 
@@ -45,9 +52,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
-        signInButton = (SignInButton) findViewById(R.id.googleSigninBtn);
+        signInButton = activityBinding.googleSigninBtn;
+        progressBarLayout = activityBinding.progressBarLayout;
 
         /*TextView textView = (TextView) signInButton.getChildAt(0);
         textView.setText(R.string.sign_in);*/
@@ -57,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBarLayout.setVisibility(View.VISIBLE);
                 signIn();
             }
         });
@@ -66,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
                 if(user != null){
+                    progressBarLayout.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
             }

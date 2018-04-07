@@ -16,7 +16,7 @@ public class TransactionDetailViewModel {
     private Transaction transaction;
 
     public String categoryName;
-    public double price;
+    public String price;
     public String date;
     public String description;
 
@@ -25,7 +25,7 @@ public class TransactionDetailViewModel {
         this.transaction = transaction;
 
         this.categoryName = Category.getCategoryName(transaction.getCategory());
-        this.price = transaction.getPrice();
+        this.price = String.valueOf(transaction.getPrice()) + Transaction.CURRENCY;
         this.date = MyDate.longTimeToDate(transaction.getTransactionDate());
         this.description = transaction.getDescription();
     }

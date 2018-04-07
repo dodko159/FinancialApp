@@ -9,8 +9,7 @@
             type="cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetailViewModel"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetail">
@@ -29,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="@{vm.categoryName}"
+
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

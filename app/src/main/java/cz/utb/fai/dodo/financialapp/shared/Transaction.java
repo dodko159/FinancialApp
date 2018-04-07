@@ -23,6 +23,7 @@ public class Transaction {
 
     public static final String INCOMES = "incomes";
     public static final String COSTS = "costs";
+    public static final String CURRENCY = "CZK";
 
     private String uid;
     private long transactionDate;

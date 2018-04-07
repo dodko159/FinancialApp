@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:layout_marginTop="12dp"
-                android:onClick="@{vm.save}"/>
+                android:onClick="@{vm::save}"/>
 
         </LinearLayout>
 

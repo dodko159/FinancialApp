@@ -1,0 +1,20 @@
+<resources>
+    <string name="other_incomes">Other</string>
+    <string name="work">Work</string>
+    <string name="loan">Loan</string>
+    <string name="win">Win</string>
+
+    <string name="other_cost">Other</string>
+    <string name="food">Food</string>
+    <string name="clothes">Clothes</string>
+    <string name="traveling">Traveling</string>
+    <string name="car">Car</string>
+    <string name="children">Children</string>
+    <string name="holiday">Holiday</string>
+    <string name="home">Home</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="service">Service</string>
+    <string name="animals">Animals</string>
+    <string name="bills">Bills</string>
+    <string name="electronics">Electronics</string>
+</resources>

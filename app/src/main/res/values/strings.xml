@@ -1,8 +1,17 @@
 <resources>
-    <string name="app_name">FinancialApp</string>
+    <string name="app_name">My financions</string>
     <string name="log_out">Log out</string>
     <string name="connection_faild">Connection faild</string>
     <string name="auth_wrong">Auth faild</string>
     <string name="auth_faild">Authentication faild</string>
     <string name="sign_in">Sign in</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="email">E-mail</string>
+    <string name="save">Save</string>
+    <string name="profile">Profile</string>
+    <string name="income">Income</string>
+    <string name="cost">Cost</string>
+    <string name="noDataForMonth">No data available for this month</string>
 </resources>

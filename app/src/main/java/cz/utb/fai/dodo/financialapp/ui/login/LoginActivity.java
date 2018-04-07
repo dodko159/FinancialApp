@@ -1,17 +1,14 @@
-package cz.utb.fai.dodo.financialapp;
+package cz.utb.fai.dodo.financialapp.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -26,21 +23,31 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import cz.utb.fai.dodo.financialapp.databinding.ActivityLoginBinding;
+import cz.utb.fai.dodo.financialapp.shared.DBManager;
+import cz.utb.fai.dodo.financialapp.ui.main.MainActivity;
+import cz.utb.fai.dodo.financialapp.R;
+import cz.utb.fai.dodo.financialapp.shared.User;
+import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.databinding.LoginDataBinding;
 
 public class LoginActivity extends AppCompatActivity {
+
+    /**** CONSTANTS ****/
+    private final static int RC_SIGN_IN = 1;
+
+    /**** VARS ****/
 
     SignInButton signInButton;
     View progressBarLayout;
     FirebaseAuth mAuth;
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth.AuthStateListener mAuthListener;
-    ActivityLoginBinding activityBinding;
+    LoginDataBinding activityBinding;
+    public final ObservableBoolean pending = new ObservableBoolean(false);
+    DBManager dbManager = new DBManager();
 
     FirebaseUser user;
-
-    private final static int RC_SIGN_IN = 1;
+    User me;
 
     @Override
     protected void onStart() {
@@ -54,32 +61,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
+        init();
+    }
+
+    private void init(){
         signInButton = activityBinding.googleSigninBtn;
         progressBarLayout = activityBinding.progressBarLayout;
 
         /*TextView textView = (TextView) signInButton.getChildAt(0);
         textView.setText(R.string.sign_in);*/
 
+        activityBinding.setAct(this);
+
         mAuth = FirebaseAuth.getInstance();
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBarLayout.setVisibility(View.VISIBLE);
-                signIn();
-            }
-        });
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    progressBarLayout.setVisibility(View.INVISIBLE);
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                }
-            }
-        };
+        setListeners();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -95,6 +91,31 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+    }
+
+    private void setListeners(){
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pending.set(true);
+                signIn();
+            }
+        });
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    pending.set(false);
+
+                    MyShared.setUser(LoginActivity.this, new User(user));
+
+                    Intent intent = MainActivity.startIntent(LoginActivity.this);
+                    startActivity(intent);
+                }
+            }
+        };
     }
 
     private void signIn() {
@@ -114,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
+                pending.set(false);
                 Toast.makeText(LoginActivity.this, R.string.auth_wrong,Toast.LENGTH_SHORT).show();
                 // ...
             }
@@ -130,6 +152,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            addUser(user);
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -137,10 +161,20 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.auth_faild,Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
-
                         // ...
                     }
                 });
     }
 
+    private void addUser(FirebaseUser user) {
+        me = new User(user);
+
+        Boolean isInDB = dbManager.ckeckUserInDB(user.getUid());
+
+        if(isInDB){
+            Toast.makeText(LoginActivity.this, R.string.welcome_back,Toast.LENGTH_SHORT).show();
+        }else {
+            dbManager.saveUserToDB(me);
+        }
+    }
 }

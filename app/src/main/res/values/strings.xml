@@ -14,4 +14,7 @@
     <string name="income">Income</string>
     <string name="cost">Cost</string>
     <string name="noDataForMonth">No data available for this month</string>
+    <string name="transaction_loading_error">Error while loading transction</string>
+    <string name="note">Note</string>
+    <string name="date">Date</string>
 </resources>

@@ -19,8 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.main.MainActivity" />
-        <activity android:name=".ui.profile.UserProfile"
-            android:label="@string/profile"/>
+        <activity
+            android:name=".ui.profile.UserProfile"
+            android:label="@string/profile" />
+        <activity android:name=".ui.detail.transaction.TransactionDetail"></activity>
     </application>
 
 </manifest>

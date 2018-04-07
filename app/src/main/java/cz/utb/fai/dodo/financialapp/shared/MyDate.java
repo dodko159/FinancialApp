@@ -3,7 +3,10 @@ package cz.utb.fai.dodo.financialapp.shared;
 import android.support.annotation.NonNull;
 
 import java.text.DateFormatSymbols;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -11,6 +14,8 @@ import java.util.Locale;
  */
 
 public class MyDate {
+
+    private static final String dateFormat = "yyyy MM dd HH:mm:ss";
 
     /***
      *
@@ -44,5 +49,16 @@ public class MyDate {
         c.setTimeInMillis(time);
 
         return c.get(Calendar.YEAR)+"_"+(c.get(Calendar.MONTH) + 1);
+    }
+
+    /***
+     * Konvertuje datum vo formate Long na datum a cas
+     * @param time datum vo formate Long
+     * @return datum vo formate - "yyyy MM dd HH:mm:ss"
+     */
+    public static String longTimeToDate(Long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(dateFormat);
+        return format.format(date);
     }
 }

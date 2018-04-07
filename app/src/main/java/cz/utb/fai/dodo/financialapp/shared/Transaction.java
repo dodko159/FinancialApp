@@ -29,14 +29,16 @@ public class Transaction {
     private long creationDate;
     private int category;
     private double price;
+    private String description;
 
     /****  CONSTRUCTOR ****/
 
-    public Transaction(long transactionDate, int category, double price) {
+    public Transaction(long transactionDate, int category, double price, String description) {
         this.transactionDate = transactionDate;
         this.category = category;
         this.price = price;
         this.creationDate = System.currentTimeMillis();
+        this.description = description;
     }
 
     /**** GET, SET ****/
@@ -77,7 +79,15 @@ public class Transaction {
         this.price = price;
     }
 
-    /**** HELPER METHODS ****/
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+/**** HELPER METHODS ****/
 
     /***
      * Prelozi data z Jsonu
@@ -114,5 +124,31 @@ public class Transaction {
     public static Boolean areTransactionsEmpty(Map map, String month){
 
         return map.get(month) != null;
+    }
+
+    /***
+     * Overide metody toString .. konvertuje Transaction na JSon
+     * @return tranyakciu vo formate Json
+     */
+    @Override
+    public String toString() {
+        String json = new Gson().toJson(this);
+        return json;
+    }
+
+    /***
+     * Konvertuje tranyakciu zo stringu do triedy Transaction
+     * @param jsonTransaction tranzakcia vo formate Jsonu
+     * @return vrati tranzakciu
+     */
+    @Nullable
+    public static Transaction fromString(@NonNull String jsonTransaction){
+        if(jsonTransaction.isEmpty()){
+            return null;
+        }
+
+        Transaction transaction;
+        transaction = new Gson().fromJson(jsonTransaction, Transaction.class);
+        return transaction;
     }
 }

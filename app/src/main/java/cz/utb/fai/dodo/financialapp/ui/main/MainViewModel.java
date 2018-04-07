@@ -42,8 +42,8 @@ public class MainViewModel extends BaseViewModel{
     }
 
     private void testDataSave() {
-        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260),INCOMES);
-        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.CHILDREN, 400),COSTS);
+        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260, "popis"),INCOMES);
+        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.CHILDREN, 400, "popis 2"),COSTS);
     }
 
     private void init() {

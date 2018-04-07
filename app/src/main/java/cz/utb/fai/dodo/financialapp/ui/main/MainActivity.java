@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     /***** START METHODS *****/
+    @NonNull
     public static Intent startIntent(@NonNull Context context) {
         return new Intent(context, MainActivity.class);
     }

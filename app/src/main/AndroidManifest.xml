@@ -22,7 +22,8 @@
         <activity
             android:name=".ui.profile.UserProfile"
             android:label="@string/profile" />
-        <activity android:name=".ui.detail.transaction.TransactionDetail"></activity>
+        <activity android:name=".ui.detail.transaction.TransactionDetail" />
+        <activity android:name=".ui.detail.category.CategoryDetail"></activity>
     </application>
 
 </manifest>

@@ -3,10 +3,8 @@ package cz.utb.fai.dodo.financialapp.shared;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import com.google.gson.Gson;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Dodo on 27.03.2018.
@@ -24,10 +22,7 @@ public class MyShared {
      * @param user user objekt
      */
     public static void setUser(@NonNull Context context, User user){
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-
-        setString(context, USERJSON, json);
+        setString(context, USERJSON, User.userToString(user));
     }
 
     /**
@@ -41,7 +36,7 @@ public class MyShared {
 
         if(userjson == null){
             user = new User();
-            user.loadUserFromDB();
+            DBManager.loadUserFromDB();
         }else{
             user.userFromJson(userjson);
         }
@@ -65,15 +60,15 @@ public class MyShared {
      * @param key kluc, podla ktoreho nacita data z pamäti
      * @return vrati data v podobe mapy < kluc, List< Transaction >> alebo null ak data niesu k dispozicii
      */
-    public static Map<String, List<Transaction>> loadTransactions(@NonNull Context context, String key) {
-        Map<String, List<Transaction>> myMap = null;
+    public static List<Transaction> loadTransactions(@NonNull Context context, String key) {
+        List<Transaction> myList = null;
         String transJson = sGetPrefs(context).getString(key,null);
 
         if(transJson != null){
-            myMap = Transaction.transactionMapFromJson(transJson);
+            myList = Transaction.transactionListFromFirebaseJson(transJson);
         }
 
-        return myMap;
+        return myList;
     }
 
     /***

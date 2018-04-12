@@ -27,8 +27,7 @@
         android:id="@+id/detailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:onClick="@{vm::goOn}"/>
+        android:text="Button"        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/transactionRecycleView"

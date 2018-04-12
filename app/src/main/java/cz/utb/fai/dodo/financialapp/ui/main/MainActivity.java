@@ -18,8 +18,6 @@ import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
-import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 
 public class MainActivity extends AppCompatActivity {
 

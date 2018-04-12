@@ -1,11 +1,12 @@
 package cz.utb.fai.dodo.financialapp.ui.profile;
 
-import android.annotation.SuppressLint;
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 
@@ -13,12 +14,27 @@ import cz.utb.fai.dodo.financialapp.shared.MyShared;
  * Created by Dodo on 27.03.2018.
  */
 
-public class UserProfileViewModel extends ViewModel {
+public class UserProfileViewModel extends AndroidViewModel {
 
+    /**** VARS ****/
     private User user;
     private String name, surname, mail;
     private Context context;
 
+    /**** CONSTRUCTOR ****/
+    UserProfileViewModel(@NonNull Application application) {
+        super(application);
+
+        this.context = application.getApplicationContext();
+        this.user = MyShared.getUser(context);
+
+        this.name = user.getName();
+        this.surname = user.getSurName();
+        this.mail = user.getMail();
+
+    }
+
+    /**** VARS ****/
     public String getName() {
         return name;
     }
@@ -43,17 +59,11 @@ public class UserProfileViewModel extends ViewModel {
         this.mail = mail;
     }
 
-    UserProfileViewModel(@NonNull Context context) {
+    /**** ****/
 
-        this.context = context;
-        this.user = MyShared.getUser(context);
-
-        this.name = user.getName();
-        this.surname = user.getSurName();
-        this.mail = user.getMail();
-
-    }
-
+    /***
+     * Uozi zmeny do shapred a DB
+     */
     public void save(View view){
 
         user = MyShared.getUser(context);
@@ -63,5 +73,6 @@ public class UserProfileViewModel extends ViewModel {
         user.setMail(mail);
 
         MyShared.setUser(context, user);
+        DBManager.updateUserInDB(user);
     }
 }

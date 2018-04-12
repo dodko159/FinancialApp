@@ -9,11 +9,16 @@ import com.google.gson.Gson;
  */
 
 public class User {
+
+    /***** VARS *****/
+
     private String name;
     private String surName;
     private String mail;
     private String uid;
     private String photoUrl;
+
+    /***** CONSTRUCTORS *****/
 
     public User() {
     }
@@ -36,6 +41,8 @@ public class User {
         this.uid = firebaseUser.getUid();
         this.photoUrl = firebaseUser.getPhotoUrl().toString();
     }
+
+    /***** GET, SET *****/
 
     public String getName() {
         return name;
@@ -73,6 +80,19 @@ public class User {
         return uid;
     }
 
+    /***** CONVERSION METHODS *****/
+
+    /**
+     * Vytori z uzivatela Json
+     * @param user Uzivatel na formatovanie
+     * @return vrati uzivatela vo foramte Json
+     */
+    public static String userToString(User user) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        return json;
+    }
+
     /***
      * Upravi aktualneho uzivatela podla jsonu a vrati ho.
      * @param userjson uzivatel vo formate Json (String)
@@ -91,23 +111,9 @@ public class User {
         return user;
     }
 
-    /***
-     * Upravi aktualneho uzivatela podla DB a vrati ho.
-     * @return vrati uzivatela
-     */
-    public User loadUserFromDB(){
-        User user = new User(FirebaseAuth.getInstance().getCurrentUser());
-
-        this.name = user.getName();
-        this.mail = user.getMail();
-        this.uid = user.getUid();
-        this.photoUrl = user.getPhotoUrl();
-
-        return user;
-    }
-
     @Override
     public String toString() {
         return name + " " + surName;
     }
+
 }

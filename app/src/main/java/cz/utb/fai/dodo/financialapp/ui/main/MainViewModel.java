@@ -1,28 +1,22 @@
 package cz.utb.fai.dodo.financialapp.ui.main;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.Category;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 
 /**
  * Created by Dodo on 30.03.2018.
@@ -30,19 +24,21 @@ import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 
 public class MainViewModel extends AndroidViewModel{
 
+    /**** CONSTANTS ****/
     private static Boolean INCOMES = true;
     private static Boolean COSTS = false;
 
-    private List<Transaction> transactions;
+    /***** VARS *****/
     private User user;
-    private Map<String, List<Transaction>> transactionMap;
+    private List<Transaction> transactionList = new ArrayList<>();
     private Context context;
-
-    HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
+    private HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
+    private HashMap<Integer, Double> prices = new HashMap<>();
 
     public int showTransaction;
     public int showNoTransaction;
 
+    /***** CONSTRUCTOR *****/
     public MainViewModel(@NonNull Application application) {
         super(application);
         this.context = this.getApplication();
@@ -53,9 +49,10 @@ public class MainViewModel extends AndroidViewModel{
         init();
     }
 
+    /**** HELPER METHODS ****/
     private void testDataSave() {
-        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260, "popis"),INCOMES);
-        DBManager.saveDataToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.CHILDREN, 400, "popis 2"),COSTS);
+        DBManager.saveTransactionToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260, "popis"),INCOMES);
+        DBManager.saveTransactionToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.CHILDREN, 400, "popis 2"),COSTS);
     }
 
     private void init() {
@@ -74,45 +71,48 @@ public class MainViewModel extends AndroidViewModel{
         if (!incomes) incomesStr = Transaction.COSTS;
 
 
-        DBManager.loadTransactionsFromDB(context, user.getUid(), incomes);
-        transactionMap = MyShared.loadTransactions(context, incomesStr);
+        DBManager.loadTransactionsFromDB(context, user.getUid(), selectedMonth, incomes);
+        transactionList = MyShared.loadTransactions(context, incomesStr);
 
-        addThisMonthIfNotExist();
+        Boolean isTranInDB = Transaction.areTransactionsEmpty(transactionList, selectedMonth);
 
-        Boolean isTranInDB = Transaction.areTransactionsEmpty(transactionMap, selectedMonth);
-
-        if(isTranInDB){
-            groupTransactionByCategory(selectedMonth);
+        if(!isTranInDB){
+            groupTransactionByCategoryAndSumPrices();
         }
         setUI(isTranInDB);
     }
 
-    private void groupTransactionByCategory(String selectMonth) {
+    private void groupTransactionByCategoryAndSumPrices() {
 
-        for (Transaction t : transactionMap.get(selectMonth)) {
+        for (Transaction t : transactionList) {
             Integer key = t.getCategory();
             if (!groupedMap.containsKey(key)) {
                 List<Transaction> list = new ArrayList<>();
                 list.add(t);
 
                 groupedMap.put(key, list);
+                prices.put(key,t.getPrice());
             } else {
                 groupedMap.get(key).add(t);
+
+                Double sum = prices.get(key);
+                sum += t.getPrice();
+                prices.put(key, sum);
             }
         }
     }
 
     private void addThisMonthIfNotExist() {
-        String thisMonth = MyDate.longTimeToMonthYear(System.currentTimeMillis());
+        /*String thisMonth = MyDate.longTimeToMonthYear(System.currentTimeMillis());
         Boolean contains = transactionMap.containsKey(thisMonth);
 
         if (!contains){
             transactionMap.put(thisMonth, null);
-        }
+        }*/
     }
 
     private void setUI(Boolean showTransaction) {
-        this.showTransaction = showTransaction ? View.VISIBLE : View.GONE;
-        this.showNoTransaction = showTransaction ? View.GONE : View.VISIBLE;
+        this.showTransaction = showTransaction ? View.GONE : View.VISIBLE;
+        this.showNoTransaction = showTransaction ? View.VISIBLE : View.GONE;
     }
 }

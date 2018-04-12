@@ -2,6 +2,7 @@ package cz.utb.fai.dodo.financialapp.shared;
 
 import android.support.annotation.NonNull;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import java.util.Locale;
 
 public class MyDate {
 
-    private static final String dateFormat = "yyyy MM dd HH:mm:ss";
+    //private static final String dateFormat = "dd MM yyyy HH:mm";
 
     /***
      *
@@ -58,7 +59,7 @@ public class MyDate {
      */
     public static String longTimeToDate(Long time){
         Date date = new Date(time);
-        Format format = new SimpleDateFormat(dateFormat);
+        Format format = DateFormat.getDateTimeInstance().getNumberFormat();
         return format.format(date);
     }
 }

@@ -13,13 +13,17 @@ import cz.utb.fai.dodo.financialapp.databinding.UserProfileDataBinding;
 
 public class UserProfile extends AppCompatActivity {
 
+    /**** VARS *****/
     UserProfileDataBinding userProfileDataBinding;
     Button updateButton;
 
+    /***** START METHODS *****/
+    @NonNull
     public static Intent startIntent(@NonNull Context context) {
         return new Intent(context, UserProfile.class);
     }
 
+    /***** LIFECYCLE METHODS *****/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +32,10 @@ public class UserProfile extends AppCompatActivity {
         init();
     }
 
+    /**** HELPER METHODS ****/
     private void init(){
         updateButton = userProfileDataBinding.buttonSaveChanges;
 
-        userProfileDataBinding.setVm(new UserProfileViewModel(UserProfile.this));
+        userProfileDataBinding.setVm(new UserProfileViewModel(getApplication()));
     }
 }

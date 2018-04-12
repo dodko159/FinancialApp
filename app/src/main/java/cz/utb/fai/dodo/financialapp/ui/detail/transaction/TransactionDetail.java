@@ -39,6 +39,7 @@ public class TransactionDetail extends AppCompatActivity {
         return intent;
     }
 
+    /**** LIFECYCLE METHODS ****/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +61,12 @@ public class TransactionDetail extends AppCompatActivity {
         }
 
         transactionDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_detail);
-        transactionDetailDataBinding.setVm(new TransactionDetailViewModel(TransactionDetail.this, transaction));
+        transactionDetailDataBinding.setVm(new TransactionDetailViewModel(getApplication(), transaction));
 
         init();
     }
 
+    /**** HELPER METHODS ****/
     private void init() {
 
     }

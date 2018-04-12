@@ -42,6 +42,7 @@ public class CategoryDetail extends AppCompatActivity {
         return intent;
     }
 
+    /***** LIFECYCLE METHODS *****/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class CategoryDetail extends AppCompatActivity {
         }
 
         categoryDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_detail);
-        categoryDetailDataBinding.setVm(new CategoryDetailViewModel(CategoryDetail.this, transactions));
+        categoryDetailDataBinding.setVm(new CategoryDetailViewModel(getApplication(), transactions));
 
     }
 }

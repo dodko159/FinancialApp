@@ -23,6 +23,13 @@
         android:text="@string/noDataForMonth"
         android:visibility="@{vm.showNoTransaction}"/>
 
+    <Button
+        android:id="@+id/detailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:onClick="@{vm::goOn}"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/transactionRecycleView"
         android:layout_width="match_parent"

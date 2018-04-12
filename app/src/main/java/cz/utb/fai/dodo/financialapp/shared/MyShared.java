@@ -81,7 +81,7 @@ public class MyShared {
      * @param context aktualny kontext
      * @param key kluc, podla ktoreho zmaze data
      */
-    public static void clerSharedByKey(@NonNull Context context, String key){
+    public static void clearSharedByKey(@NonNull Context context, String key){
         sGetPrefs(context).edit().remove(key).apply();
     }
 

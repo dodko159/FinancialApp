@@ -1,39 +1,51 @@
 package cz.utb.fai.dodo.financialapp.ui.main;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.Category;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.ui.BaseViewModel;
+import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 
 /**
  * Created by Dodo on 30.03.2018.
  */
 
-public class MainViewModel extends BaseViewModel{
+public class MainViewModel extends AndroidViewModel{
 
     private static Boolean INCOMES = true;
     private static Boolean COSTS = false;
 
     private List<Transaction> transactions;
     private User user;
-    private Context context;
     private Map<String, List<Transaction>> transactionMap;
+    private Context context;
+
+    HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
 
     public int showTransaction;
     public int showNoTransaction;
 
-    public MainViewModel(@NonNull Context context) {
-        this.context = context;
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+        this.context = this.getApplication();
         this.user = MyShared.getUser(context);
 
         //testDataSave();
@@ -47,7 +59,7 @@ public class MainViewModel extends BaseViewModel{
     }
 
     private void init() {
-        //MyShared.clerSharedByKey(context, Transaction.INCOMES);
+        //MyShared.clearSharedByKey(context, Transaction.INCOMES);
         loadData();
     }
 
@@ -55,7 +67,7 @@ public class MainViewModel extends BaseViewModel{
 
         //// TODO: 01.04.2018 akualne nacitany mesiac, ... , vyber incomes alebo costs
         Long time = System.currentTimeMillis();
-        String selectMonth = MyDate.longTimeToMonthYear(time);
+        String selectedMonth = MyDate.longTimeToMonthYear(time);
 
         Boolean incomes = true;
         String incomesStr = Transaction.INCOMES;
@@ -67,8 +79,27 @@ public class MainViewModel extends BaseViewModel{
 
         addThisMonthIfNotExist();
 
-        Boolean isTranInDB = Transaction.areTransactionsEmpty(transactionMap, selectMonth);
+        Boolean isTranInDB = Transaction.areTransactionsEmpty(transactionMap, selectedMonth);
+
+        if(isTranInDB){
+            groupTransactionByCategory(selectedMonth);
+        }
         setUI(isTranInDB);
+    }
+
+    private void groupTransactionByCategory(String selectMonth) {
+
+        for (Transaction t : transactionMap.get(selectMonth)) {
+            Integer key = t.getCategory();
+            if (!groupedMap.containsKey(key)) {
+                List<Transaction> list = new ArrayList<>();
+                list.add(t);
+
+                groupedMap.put(key, list);
+            } else {
+                groupedMap.get(key).add(t);
+            }
+        }
     }
 
     private void addThisMonthIfNotExist() {

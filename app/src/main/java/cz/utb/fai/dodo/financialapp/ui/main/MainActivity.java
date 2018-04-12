@@ -18,6 +18,7 @@ import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String USERJSON = "userJson";
 
     /***** VARS *****/
+    private Button button;
+
     Button logOutBtn, profileBtn;
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseAuth mAuth;
@@ -59,8 +62,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainViewModel mainViewModel = new MainViewModel(getApplication());
+
         mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mainActivityDataBinding.setVm(new MainViewModel(MainActivity.this));
+        mainActivityDataBinding.setVm(mainViewModel);
 
         init();
         setListeners();
@@ -112,6 +117,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });*/
+
+       button = mainActivityDataBinding.detailButton;
+
+       button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               //
+           }
+       });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

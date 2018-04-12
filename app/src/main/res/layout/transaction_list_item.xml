@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data class="TransactionListItemDataBinding">
+        <import type="android.view.View"/>
+
+    </data>
+<LinearLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:paddingStart="20dp"
+        android:text="Datum"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="0dp"
+        android:text="Cena"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp" />
+
+</LinearLayout>
+</layout>

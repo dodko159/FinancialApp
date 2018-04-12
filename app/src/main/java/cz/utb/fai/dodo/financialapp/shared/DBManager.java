@@ -95,6 +95,7 @@ public class DBManager{
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
+                    //MyShared.loadTransactions(context,key2);
                 }
 
                 @Override

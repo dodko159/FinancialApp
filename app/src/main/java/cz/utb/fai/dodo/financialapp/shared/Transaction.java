@@ -104,7 +104,7 @@ public class Transaction {
 
         for(Map.Entry<String, LinkedTreeMap> entry : myMap.entrySet()){
             LinkedTreeMap month = entry.getValue();
-            List transactions = new ArrayList<>(month.values());
+            List transactions = new ArrayList<Transaction>(month.values());
 
             Type fooType = new TypeToken<List<Transaction>>() {}.getType();
             List<Transaction> transList = new Gson().fromJson(transactions.toString(),fooType);

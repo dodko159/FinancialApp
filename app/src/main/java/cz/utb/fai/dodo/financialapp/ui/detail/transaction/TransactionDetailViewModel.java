@@ -26,7 +26,7 @@ public class TransactionDetailViewModel extends AndroidViewModel{
         this.transaction = transaction;
 
         this.categoryName = Category.getCategoryName(transaction.getCategory());
-        this.price = String.valueOf(transaction.getPrice()) + Transaction.CURRENCY;
+        this.price = String.valueOf(transaction.getPrice()) + " " + Transaction.CURRENCY;
         this.date = MyDate.longTimeToDate(transaction.getTransactionDate());
         this.description = transaction.getDescription();
     }

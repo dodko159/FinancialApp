@@ -13,8 +13,10 @@ import cz.utb.fai.dodo.financialapp.shared.Transaction;
 public class CategoryDetailViewModel extends AndroidViewModel{
 
     private List<Transaction> transactions;
+    private double totalPrice;
 
     public String categoryName;
+
     public String suma;
 
     CategoryDetailViewModel(@NonNull Application application, List<Transaction> transactions) {
@@ -28,5 +30,14 @@ public class CategoryDetailViewModel extends AndroidViewModel{
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+        suma = totalPrice + " " + Transaction.CURRENCY;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

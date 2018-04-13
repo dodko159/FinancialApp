@@ -38,7 +38,7 @@ public class AdapterTransaction extends RecyclerView.Adapter<AdapterTransaction.
         final Transaction transaction = listItems.get(position);
         String price = transaction.getPrice()+"";
 
-        holder.date.setText(MyDate.longTimeToDate(transaction.getCreationDate()));
+        holder.date.setText(MyDate.longTimeToDate(transaction.getTransactionDate()));
         holder.price.setText(price);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

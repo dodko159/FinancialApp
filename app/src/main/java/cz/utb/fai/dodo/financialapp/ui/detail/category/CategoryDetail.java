@@ -18,6 +18,7 @@ import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.CategoryDetailDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.AdapterTransaction;
+import cz.utb.fai.dodo.financialapp.shared.Category;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 import cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetail;
@@ -26,6 +27,8 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
 
     /***** CONSTANTS *****/
     private static final String TRANSACTIONS = "transactions";
+    private static final String TOTALPRICE = "totalprice";
+    private static final String CATEGORY = "category";
 
     /***** VARS *****/
     CategoryDetailDataBinding categoryDetailDataBinding;
@@ -44,10 +47,10 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
      * @param transactions tranzkacie na zobrazenie
      * @return Vrací intent s vloženým listom tranyakcii
      */
-    public static Intent startIntent(@NonNull Context context, List<Transaction> transactions) {
+    public static Intent startIntent(@NonNull Context context, List<Transaction> transactions, double total, int category) {
         Intent intent = startIntent(context);
         //todo: skontrolovat toString
-        intent.putExtra(TRANSACTIONS, transactions.toString());
+        intent.putExtra(TRANSACTIONS, transactions.toString()).putExtra(TOTALPRICE, total).putExtra(CATEGORY, category);
 
         return intent;
     }
@@ -75,6 +78,11 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
 
         viewModel = new CategoryDetailViewModel(getApplication(), transactions);
 
+        if (getIntent().getExtras() != null){
+            viewModel.setCategoryName(Category.getCategoryName(getIntent().getIntExtra(CATEGORY,0)));
+            viewModel.setTotalPrice(getIntent().getDoubleExtra(TOTALPRICE, 0));
+        }
+
         categoryDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail);
         categoryDetailDataBinding.setVm(viewModel);
 
@@ -95,9 +103,7 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
 
     @Override
     public void onItemClicked(Transaction transaction) {
-        Toast.makeText(this, "Redirecting to transaction > " + MyDate.longTimeToDate(transaction.getTransactionDate()), Toast.LENGTH_SHORT).show();
-
         Intent intent = TransactionDetail.startIntent(this, transaction);
-        //this.startActivity(intent);
+        this.startActivity(intent);
     }
 }

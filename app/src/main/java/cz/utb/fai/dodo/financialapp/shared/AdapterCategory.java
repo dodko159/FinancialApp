@@ -38,8 +38,10 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         final CategorySimple categorySimple = items.get(position);
 
         String categoryName = Category.getCategoryName(categorySimple.getCategory());
+        String sum = categorySimple.getPriceSum()+"";
+
         holder.categoryName.setText(categoryName);
-        holder.priceSum.setText(categorySimple.getPriceSum());
+        holder.priceSum.setText(sum);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

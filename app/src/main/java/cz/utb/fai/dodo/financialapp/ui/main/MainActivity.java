@@ -155,9 +155,7 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
 
         List<Transaction> transactions = model.getGroupedMap().get(categorySimple.getCategory());
 
-        Intent intent = CategoryDetail.startIntent(this, transactions);
+        Intent intent = CategoryDetail.startIntent(this, transactions, categorySimple.getPriceSum(), categorySimple.getCategory());
         startActivity(intent);
-
-        Toast.makeText(this, "Redirecting to > " + Category.getCategoryName(categorySimple.getCategory()), Toast.LENGTH_SHORT).show();
     }
 }

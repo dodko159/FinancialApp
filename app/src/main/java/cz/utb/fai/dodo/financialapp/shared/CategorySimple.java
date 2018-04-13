@@ -14,12 +14,12 @@ import java.util.Map;
 public class CategorySimple {
     /**** VARS ****/
     private int category;
-    private String priceSum;
+    private double priceSum;
 
     /**** CONSTRUCTOR ****/
-    public CategorySimple(int category, Double priceSum) {
+    public CategorySimple(int category, double priceSum) {
         this.category = category;
-        this.priceSum = priceSum+"";
+        this.priceSum = priceSum;
     }
 
     /**** GETS *****/
@@ -27,7 +27,7 @@ public class CategorySimple {
         return category;
     }
 
-    public String getPriceSum() {
+    public double getPriceSum() {
         return priceSum;
     }
 

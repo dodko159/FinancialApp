@@ -49,6 +49,16 @@ public class MainViewModel extends AndroidViewModel{
         init();
     }
 
+    /**** GETS ****/
+
+    public HashMap<Integer, Double> getPrices() {
+        return prices;
+    }
+
+    public HashMap<Integer, List<Transaction>> getGroupedMap() {
+        return groupedMap;
+    }
+
     /**** HELPER METHODS ****/
     private void testDataSave() {
         DBManager.saveTransactionToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260, "popis"),INCOMES);

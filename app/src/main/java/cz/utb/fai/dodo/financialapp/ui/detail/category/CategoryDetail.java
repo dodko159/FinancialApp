@@ -6,21 +6,31 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
+import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.CategoryDetailDataBinding;
+import cz.utb.fai.dodo.financialapp.shared.AdapterTransaction;
+import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetail;
 
-public class CategoryDetail extends AppCompatActivity {
+public class CategoryDetail extends AppCompatActivity implements IAdapterItemClicked<Transaction>{
 
     /***** CONSTANTS *****/
     private static final String TRANSACTIONS = "transactions";
 
     /***** VARS *****/
     CategoryDetailDataBinding categoryDetailDataBinding;
+    private CategoryDetailViewModel viewModel;
+    private RecyclerView recyclerView;
 
     /***** START METHODS *****/
     @NonNull
@@ -56,15 +66,38 @@ public class CategoryDetail extends AppCompatActivity {
         List<Transaction> transactions = null;
 
         if(transjson != null){
-            //todo: skonvertovat transjson na list
+            transactions = Transaction.transactionListFromJson(transjson);
         }else{
             //todo nieco
             Toast.makeText(this,R.string.transaction_loading_error, Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        categoryDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_detail);
-        categoryDetailDataBinding.setVm(new CategoryDetailViewModel(getApplication(), transactions));
+        viewModel = new CategoryDetailViewModel(getApplication(), transactions);
 
+        categoryDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail);
+        categoryDetailDataBinding.setVm(viewModel);
+
+        recyclerView = categoryDetailDataBinding.recycleViewCategory;
+
+        init();
+    }
+
+    private void init() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        AdapterTransaction adapter = new AdapterTransaction(new ArrayList<Transaction>(), this);
+        adapter.setNewList(viewModel.getTransactions());
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClicked(Transaction transaction) {
+        Toast.makeText(this, "Redirecting to transaction > " + MyDate.longTimeToDate(transaction.getTransactionDate()), Toast.LENGTH_SHORT).show();
+
+        Intent intent = TransactionDetail.startIntent(this, transaction);
+        //this.startActivity(intent);
     }
 }

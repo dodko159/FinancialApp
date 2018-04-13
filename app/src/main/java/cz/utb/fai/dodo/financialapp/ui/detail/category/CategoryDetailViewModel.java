@@ -17,8 +17,16 @@ public class CategoryDetailViewModel extends AndroidViewModel{
     public String categoryName;
     public String suma;
 
-    public CategoryDetailViewModel(@NonNull Application application, List<Transaction> transactions) {
+    CategoryDetailViewModel(@NonNull Application application, List<Transaction> transactions) {
         super(application);
+        this.transactions = transactions;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 }

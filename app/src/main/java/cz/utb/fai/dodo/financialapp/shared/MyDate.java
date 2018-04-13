@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class MyDate {
 
-    //private static final String dateFormat = "dd MM yyyy HH:mm";
+    private static final String dateFormat = "dd.MM.yyyy HH:mm";
 
     /***
      *
@@ -59,7 +59,8 @@ public class MyDate {
      */
     public static String longTimeToDate(Long time){
         Date date = new Date(time);
-        Format format = DateFormat.getDateTimeInstance().getNumberFormat();
+        //Format format = DateFormat.getDateTimeInstance().getNumberFormat();
+        Format format = new SimpleDateFormat(dateFormat);
         return format.format(date);
     }
 }

@@ -62,7 +62,7 @@ public class AddTransactionActivity extends AppCompatActivity implements IAdapte
             categories = Category.getCost();
         }
 
-        final AdapterCategoryGrid adapter = new AdapterCategoryGrid(categories,this);
+        final AdapterCategoryGrid adapter = new AdapterCategoryGrid(categories,this, getApplication().getApplicationContext());
         recyclerView.setAdapter(adapter);
 
         viewModel.getIncomeLive().observe(this, new Observer<Boolean>() {

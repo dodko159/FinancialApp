@@ -1,12 +1,12 @@
 package cz.utb.fai.dodo.financialapp.shared.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,18 +23,22 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
 
     private List<String> categories;
     private IAdapterItemClicked<Integer> listener;
+    private Context context;
 
     /**** CONSTRUCTORS ****/
 
-    public AdapterCategoryGrid(List<String> categories, IAdapterItemClicked<Integer> listener) {
+    public AdapterCategoryGrid(List<String> categories, IAdapterItemClicked<Integer> listener, Context applicationContext) {
         this.categories = categories;
         this.listener = listener;
+        this.context = applicationContext;
     }
 
-    public AdapterCategoryGrid(String[] categories, IAdapterItemClicked<Integer> listener) {
+    public AdapterCategoryGrid(String[] categories, IAdapterItemClicked<Integer> listener, Context applicationContext) {
         this.categories = Arrays.asList(categories);
         this.listener = listener;
+        this.context = applicationContext;
     }
+
 
     /**** MTEHODS ****/
 
@@ -49,6 +53,12 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         String catName = categories.get(position);
+
+        if(position%2 == 0){
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor1));
+        }else{
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorGrayPink));
+        }
 
         holder.catName.setText(catName);
 

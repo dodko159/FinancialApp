@@ -7,7 +7,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
+import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +57,7 @@ public class Transaction {
         this.uid = uid;
     }
 
-    public long getTransactionDate() {
+    public Long getTransactionDate() {
         return transactionDate;
     }
 
@@ -168,30 +170,19 @@ public class Transaction {
     /***
      * Prelozi data z Jsonu
      * @param transJson tranzakcie vo formate Json (String)
-     * @return vrati data v podobe mapy < kluc, List< Transaction >>
+     * @return vrati data v podobe List< Transaction >
      */
     @Nullable
     public static List<Transaction> transactionListFromFirebaseJson(@NonNull String transJson) {
 
-        HashMap map = new Gson().fromJson(transJson, HashMap.class);
+        Type fooType = new TypeToken<HashMap<String, Transaction>>() {}.getType();
+        JsonReader reader = new JsonReader(new StringReader(transJson.trim()));
+        reader.setLenient(true);
+
+        HashMap map = new Gson().fromJson(reader, fooType);
         List transactions = new ArrayList<Transaction>(map.values());
 
-        Type fooType = new TypeToken<List<Transaction>>() {}.getType();
-        return new Gson().fromJson(transactions.toString(),fooType);
-    }
-
-    /**** HELPER METHODS ****/
-
-    /***
-     * Skontroluje ci su v danom mesiaci nejake tranzakcie
-     * @param map tranzakcie vo formate mapy
-     * @param month mesiac
-     * @return true ak su pre dany mesiac nejake data k dispozicii
-     */
-    @NonNull
-    public static Boolean areTransactionsEmpty(List list, String month){
-
-        return list.isEmpty();
+        return transactions;
     }
 
 }

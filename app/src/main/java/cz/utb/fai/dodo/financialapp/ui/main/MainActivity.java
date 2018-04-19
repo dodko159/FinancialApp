@@ -1,10 +1,12 @@
 package cz.utb.fai.dodo.financialapp.ui.main;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
+import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
 import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
@@ -45,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     FirebaseAuth mAuth;
     FirebaseUser user;
     User me = new User();
-    MainViewModel model;
+    MainViewModel viewModel;
+    Observer<HashMap<Integer, Double>> observer;
 
     MainActivityDataBinding mainActivityDataBinding;
 
@@ -74,10 +80,11 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.setMonth(MyDate.longTimeToMonthYear(System.currentTimeMillis()));
 
         mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mainActivityDataBinding.setVm(mainViewModel);
+        mainActivityDataBinding.setVm(viewModel);
 
         init();
     }
@@ -88,12 +95,14 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
         setListeners();
 
         mAuth.addAuthStateListener(mAuthListener);
+        viewModel.getPrices().observe(this, observer);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
+        viewModel.getPrices().removeObserver(observer);
     }
 
     /**** HELPER METHODS ****/
@@ -115,16 +124,33 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
 
         addTransaction = mainActivityDataBinding.addTransactionButton;
 
-        model = ViewModelProviders.of(this).get(MainViewModel.class);
-
         recyclerView = mainActivityDataBinding.transactionRecycleView;
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        AdapterCategory adapter = new AdapterCategory(new ArrayList<CategorySimple>(), this);
-        adapter.setNewList(CategorySimple.mapToList(model.getPrices()));
+        final AdapterCategory adapter = new AdapterCategory(new ArrayList<CategorySimple>(), this);
+
+        final Map<Integer, Double> map = viewModel.getPrices().getValue();
+        if (map == null) {
+            adapter.setNewList(new ArrayList<CategorySimple>());
+        }else {
+            adapter.setNewList(CategorySimple.mapToList(map));
+        }
+
         recyclerView.setAdapter(adapter);
+
+        observer = new Observer<HashMap<Integer, Double>>() {
+            @Override
+            public void onChanged(@Nullable HashMap<Integer, Double> integerDoubleHashMap) {
+                if (integerDoubleHashMap == null) {
+                    adapter.setNewList(new ArrayList<CategorySimple>());
+                }else {
+                    adapter.setNewList(CategorySimple.mapToList(integerDoubleHashMap));
+                }
+            }
+        };
+
     }
 
     private void setListeners(){
@@ -164,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     @Override
     public void onItemClicked(CategorySimple categorySimple) {
 
-        List<Transaction> transactions = model.getGroupedMap().get(categorySimple.getCategory());
+        List<Transaction> transactions = viewModel.getGroupedMap().get(categorySimple.getCategory());
 
         Intent intent = CategoryDetail.startIntent(this, transactions, categorySimple.getPriceSum(), categorySimple.getCategory());
         startActivity(intent);

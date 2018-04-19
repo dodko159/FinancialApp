@@ -64,7 +64,8 @@
             android:layout_weight="1"
             android:background="@drawable/border"
             android:elevation="0dp"
-            android:text="@string/income" />
+            android:text="@string/income"
+            android:onClick="@{vm::switchToIncomes}"/>
 
         <Button
             android:id="@+id/costButton"
@@ -72,7 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/border"
-            android:text="@string/cost" />
+            android:text="@string/cost"
+            android:onClick="@{vm::switchToCosts}"/>
     </LinearLayout>
 
 

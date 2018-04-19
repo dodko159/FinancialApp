@@ -95,7 +95,7 @@ public class DBManager{
      * Nacita tranzakcie s databaze
      * @param context aktualny kontext
      * @param userUid id uzivatela
-     * @param selectedMonth
+     * @param selectedMonth mesiac, ktory sa ma stiahnut
      * @param income true ak sa jedna on prijem (Incomes) flase ak o vidaj (Costs)
      */
     public static void loadTransactionsFromDB(@NonNull final Context context, String userUid, String selectedMonth, Boolean income) {
@@ -108,17 +108,47 @@ public class DBManager{
 
         final String key2 = key;
 
-            dbRef.child(userUid).child(selectedMonth).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
-                }
+        dbRef.child(userUid).child(selectedMonth).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    /***
+     * Nacita tranzakcie s databaze
+     * @param context aktualny kontext
+     * @param userUid id uzivatela
+     * @param selectedMonth
+     * @param income true ak sa jedna on prijem (Incomes) flase ak o vidaj (Costs)
+     */
+    public static void loadTransactionsFromDBOld(@NonNull final Context context, String userUid, String selectedMonth, Boolean income) {
+        DatabaseReference dbRef = incomeRef;
+        String key = INCOMES;
+        if (!income) {
+            dbRef = costRef;
+            key = COSTS;
+        }
+
+        final String key2 = key;
+
+        dbRef.child(userUid).child(selectedMonth).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     //todo: skontrolovat

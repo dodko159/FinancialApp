@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
@@ -57,6 +59,14 @@ public class AdapterTransaction extends RecyclerView.Adapter<AdapterTransaction.
     }
 
     public void setNewList(List<Transaction> list){
+
+        Collections.sort(list, new Comparator<Transaction>() {
+            @Override
+            public int compare(Transaction o1, Transaction o2) {
+                return o2.getTransactionDate().compareTo(o1.getTransactionDate());
+            }
+        });
+
         this.listItems=list;
         notifyDataSetChanged();
     }

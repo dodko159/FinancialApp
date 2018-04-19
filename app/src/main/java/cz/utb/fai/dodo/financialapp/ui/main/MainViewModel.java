@@ -2,19 +2,23 @@ package cz.utb.fai.dodo.financialapp.ui.main;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import cz.utb.fai.dodo.financialapp.shared.Category;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
@@ -25,15 +29,30 @@ import cz.utb.fai.dodo.financialapp.shared.Transaction;
 public class MainViewModel extends AndroidViewModel{
 
     /**** CONSTANTS ****/
-    private static Boolean INCOMES = true;
-    private static Boolean COSTS = false;
+    private boolean INCOMES = true;
+    private boolean COSTS = false;
 
     /***** VARS *****/
     private User user;
-    private List<Transaction> transactionList = new ArrayList<>();
     private Context context;
-    private HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
-    private HashMap<Integer, Double> prices = new HashMap<>();
+    private String month;
+    private Boolean[] uiSetings = {false, false};
+    private boolean isActiveIncomes = true;
+
+    private HashMap<Integer, List<Transaction>> groupedMapIncomes = new HashMap<>();
+    private HashMap<Integer, Double> pricesIncomes = new HashMap<>();
+
+    private HashMap<Integer, List<Transaction>> groupedMapCosts = new HashMap<>();
+    private HashMap<Integer, Double> pricesCosts = new HashMap<>();
+
+    private ValueEventListener listenerForIncomes;
+    private ValueEventListener listenerForCosts;
+
+    private DatabaseReference incomeRef = FirebaseDatabase.getInstance().getReference(Transaction.INCOMES);
+    private DatabaseReference costRef = FirebaseDatabase.getInstance().getReference(Transaction.COSTS);
+
+    private MutableLiveData<HashMap<Integer, Double>> prices = new MutableLiveData<>();
+    HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
 
     public int showTransaction;
     public int showNoTransaction;
@@ -41,17 +60,23 @@ public class MainViewModel extends AndroidViewModel{
     /***** CONSTRUCTOR *****/
     public MainViewModel(@NonNull Application application) {
         super(application);
-        this.context = this.getApplication();
+        this.context = application.getApplicationContext();
         this.user = MyShared.getUser(context);
 
-        //testDataSave();
-
-        init();
+        prices.setValue(null);
     }
 
-    /**** GETS ****/
+    /**** GET, SET****/
 
-    public HashMap<Integer, Double> getPrices() {
+    public void setMonth(String month) {
+        this.month = month;
+
+        setListeners();
+
+        setIncomesOrCost(INCOMES);
+    }
+
+    public MutableLiveData<HashMap<Integer, Double>> getPrices() {
         return prices;
     }
 
@@ -59,40 +84,78 @@ public class MainViewModel extends AndroidViewModel{
         return groupedMap;
     }
 
+    /**** LIFECYCLE METHODS ****/
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+
+        incomeRef.removeEventListener(listenerForIncomes);
+        costRef.removeEventListener(listenerForCosts);
+    }
+
     /**** HELPER METHODS ****/
-    private void testDataSave() {
-        DBManager.saveTransactionToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.WORK, 1260, "popis"),INCOMES);
-        DBManager.saveTransactionToDB(user.getUid(), new Transaction(System.currentTimeMillis(), Category.CHILDREN, 400, "popis 2"),COSTS);
+
+    private void setListeners() {
+        listenerForIncomes = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    processData(INCOMES, Transaction.transactionListFromFirebaseJson(dataSnapshot.getValue().toString()));
+                    update();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+
+        listenerForCosts = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    processData(COSTS, Transaction.transactionListFromFirebaseJson(dataSnapshot.getValue().toString()));
+                    update();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+
+        incomeRef = incomeRef.child(user.getUid()).child(month);
+        costRef = costRef.child(user.getUid()).child(month);
+
+        incomeRef.addValueEventListener(listenerForIncomes);
+        costRef.addValueEventListener(listenerForCosts);
     }
 
-    private void init() {
-        //MyShared.clearSharedByKey(context, Transaction.INCOMES);
-        loadData();
-    }
+    private void processData(boolean incomes, List<Transaction> transactions){
 
-    private void loadData(){
-
-        //// TODO: 01.04.2018 akualne nacitany mesiac, ... , vyber incomes alebo costs
-        Long time = System.currentTimeMillis();
-        String selectedMonth = MyDate.longTimeToMonthYear(time);
-
-        Boolean incomes = true;
-        String incomesStr = Transaction.INCOMES;
-        if (!incomes) incomesStr = Transaction.COSTS;
-
-
-        DBManager.loadTransactionsFromDB(context, user.getUid(), selectedMonth, incomes);
-        transactionList = MyShared.loadTransactions(context, incomesStr);
-
-        Boolean isTranInDB = Transaction.areTransactionsEmpty(transactionList, selectedMonth);
-
-        if(!isTranInDB){
-            groupTransactionByCategoryAndSumPrices();
+        Boolean isNotEmpty = false;
+        if (transactions != null) {
+            isNotEmpty = !transactions.isEmpty();
         }
-        setUI(isTranInDB);
+
+        if(incomes){
+            uiSetings[0] = isNotEmpty;
+        }else {
+            uiSetings[1] = isNotEmpty;
+        }
+
+        if(isNotEmpty){
+            groupTransactionByCategoryAndSumPrices(transactions, incomes);
+        }
     }
 
-    private void groupTransactionByCategoryAndSumPrices() {
+    private void groupTransactionByCategoryAndSumPrices(List<Transaction> transactionList, boolean incomes) {
+
+        HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
+        HashMap<Integer, Double> prices = new HashMap<>();
 
         for (Transaction t : transactionList) {
             Integer key = t.getCategory();
@@ -110,6 +173,14 @@ public class MainViewModel extends AndroidViewModel{
                 prices.put(key, sum);
             }
         }
+
+        if(incomes){
+            groupedMapIncomes = groupedMap;
+            pricesIncomes = prices;
+        }else {
+            groupedMapCosts = groupedMap;
+            pricesCosts = prices;
+        }
     }
 
     private void addThisMonthIfNotExist() {
@@ -122,7 +193,41 @@ public class MainViewModel extends AndroidViewModel{
     }
 
     private void setUI(Boolean showTransaction) {
-        this.showTransaction = showTransaction ? View.GONE : View.VISIBLE;
-        this.showNoTransaction = showTransaction ? View.VISIBLE : View.GONE;
+        this.showTransaction = showTransaction ? View.VISIBLE : View.GONE;
+        this.showNoTransaction = showTransaction ? View.GONE : View.VISIBLE;
     }
+
+    private void update(){
+        setIncomesOrCost(isActiveIncomes);
+    }
+
+    private void setIncomesOrCost(boolean incomes){
+        if(incomes){
+            if(uiSetings[0]){
+                prices.setValue(pricesIncomes);
+                groupedMap = groupedMapIncomes;
+            }
+
+            setUI(uiSetings[0]);
+        }else {
+            if(uiSetings[1]) {
+                prices.setValue(pricesCosts);
+                groupedMap = groupedMapCosts;
+            }
+
+            setUI(uiSetings[1]);
+        }
+    }
+
+    public void switchToIncomes(View v){
+        setIncomesOrCost(INCOMES);
+        isActiveIncomes = INCOMES;
+    }
+
+    public void switchToCosts(View v){
+        setIncomesOrCost(COSTS);
+        isActiveIncomes = COSTS;
+    }
+
+
 }

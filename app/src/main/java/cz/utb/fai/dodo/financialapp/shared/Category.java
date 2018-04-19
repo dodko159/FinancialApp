@@ -38,7 +38,7 @@ public final class Category {
         if(category < OFFSET){
             return Income[category];
         }else{
-            return Cost[category];
+            return Cost[category-OFFSET];
         }
     }
 }

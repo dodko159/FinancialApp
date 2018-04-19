@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
 
+
     <LinearLayout
         android:id="@+id/listItemLayout"
         android:layout_width="match_parent"
@@ -12,18 +13,12 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/textViewTransactionDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewTransactionPrice"
+            android:id="@+id/textViewGridRecycleViewCategory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:layout_height="120dp"
+            android:gravity="center_vertical|center"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package cz.utb.fai.dodo.financialapp.ui.detail.category;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -17,9 +18,8 @@ import java.util.List;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.CategoryDetailDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.AdapterTransaction;
+import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterTransaction;
 import cz.utb.fai.dodo.financialapp.shared.Category;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 import cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetail;
 
@@ -76,7 +76,8 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
             finish();
         }
 
-        viewModel = new CategoryDetailViewModel(getApplication(), transactions);
+        viewModel = ViewModelProviders.of(this).get(CategoryDetailViewModel.class);
+        viewModel.setTransactions(transactions);
 
         if (getIntent().getExtras() != null){
             viewModel.setCategoryName(Category.getCategoryName(getIntent().getIntExtra(CATEGORY,0)));

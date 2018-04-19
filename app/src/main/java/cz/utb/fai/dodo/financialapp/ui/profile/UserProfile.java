@@ -1,6 +1,7 @@
 package cz.utb.fai.dodo.financialapp.ui.profile;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -16,6 +17,7 @@ public class UserProfile extends AppCompatActivity {
     /**** VARS *****/
     UserProfileDataBinding userProfileDataBinding;
     Button updateButton;
+    UserProfileViewModel viewModel;
 
     /***** START METHODS *****/
     @NonNull
@@ -28,6 +30,7 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userProfileDataBinding = DataBindingUtil.setContentView(this,R.layout.activity_user_profile);
+        viewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
 
         init();
     }
@@ -36,6 +39,6 @@ public class UserProfile extends AppCompatActivity {
     private void init(){
         updateButton = userProfileDataBinding.buttonSaveChanges;
 
-        userProfileDataBinding.setVm(new UserProfileViewModel(getApplication()));
+        userProfileDataBinding.setVm(viewModel);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,13 +22,13 @@ import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
-import cz.utb.fai.dodo.financialapp.shared.AdapterCategory;
-import cz.utb.fai.dodo.financialapp.shared.Category;
+import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
 import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
 import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 
 public class MainActivity extends AppCompatActivity implements IAdapterItemClicked<CategorySimple>{
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     private Button button;
 
     Button logOutBtn, profileBtn;
+    FloatingActionButton addTransaction;
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -73,18 +74,19 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainViewModel mainViewModel = new MainViewModel(getApplication());
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainActivityDataBinding.setVm(mainViewModel);
 
         init();
-        setListeners();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        setListeners();
+
         mAuth.addAuthStateListener(mAuthListener);
     }
 
@@ -110,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
         }else{
             me = MyShared.getUser(this);
         }
+
+        addTransaction = mainActivityDataBinding.addTransactionButton;
 
         model = ViewModelProviders.of(this).get(MainViewModel.class);
 
@@ -138,6 +142,13 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
                 startActivity(intent);
             }
         });*/
+
+       addTransaction.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(MainActivity.this, AddTransactionActivity.class));
+           }
+       });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

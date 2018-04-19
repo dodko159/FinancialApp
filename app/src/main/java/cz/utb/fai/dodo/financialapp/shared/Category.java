@@ -8,7 +8,7 @@ import cz.utb.fai.dodo.financialapp.R;
  */
 
 public final class Category {
-    private static final int OFFSET = 10;
+    public static final int OFFSET = 10;
 
     public static final int WORK = 1, LOAN = 2, WIN = 3, OTHERINCOME = 0;
     public static final int FOOD = OFFSET+1, CLOTHES = OFFSET+2, TRAVELING = OFFSET+3, CAR = OFFSET+4, CHILDREN = OFFSET+5,
@@ -26,6 +26,13 @@ public final class Category {
         "Animals", "Bills", "Electronics"
     };
 
+    public static String[] getIncome() {
+        return Income;
+    }
+
+    public static String[] getCost() {
+        return Cost;
+    }
 
     public static String getCategoryName(int category){
         if(category < OFFSET){

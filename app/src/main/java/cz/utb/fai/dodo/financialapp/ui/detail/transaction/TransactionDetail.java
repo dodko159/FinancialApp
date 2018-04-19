@@ -1,5 +1,6 @@
 package cz.utb.fai.dodo.financialapp.ui.detail.transaction;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -60,8 +61,11 @@ public class TransactionDetail extends AppCompatActivity {
             finish();
         }
 
+        TransactionDetailViewModel viewModel = ViewModelProviders.of(this).get(TransactionDetailViewModel.class);
+        viewModel.setTransaction(transaction);
+
         transactionDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_detail);
-        transactionDetailDataBinding.setVm(new TransactionDetailViewModel(getApplication(), transaction));
+        transactionDetailDataBinding.setVm(viewModel);
 
         init();
     }

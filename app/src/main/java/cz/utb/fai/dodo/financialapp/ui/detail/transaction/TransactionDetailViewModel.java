@@ -21,8 +21,11 @@ public class TransactionDetailViewModel extends AndroidViewModel{
     public String date;
     public String description;
 
-    public TransactionDetailViewModel(@NonNull Application application, Transaction transaction) {
+    public TransactionDetailViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
 
         this.categoryName = Category.getCategoryName(transaction.getCategory());
@@ -30,6 +33,4 @@ public class TransactionDetailViewModel extends AndroidViewModel{
         this.date = MyDate.longTimeToDate(transaction.getTransactionDate());
         this.description = transaction.getDescription();
     }
-
-
 }

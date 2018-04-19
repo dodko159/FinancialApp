@@ -23,7 +23,8 @@
             android:name=".ui.profile.UserProfile"
             android:label="@string/profile" />
         <activity android:name=".ui.detail.transaction.TransactionDetail" />
-        <activity android:name=".ui.detail.category.CategoryDetail"></activity>
+        <activity android:name=".ui.detail.category.CategoryDetail" />
+        <activity android:name=".ui.addTransaction.AddTransactionActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.shared.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
+import cz.utb.fai.dodo.financialapp.shared.MyDate;
+import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
 /**
  * Created by Dodo on 13.04.2018.

@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.shared.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
+import cz.utb.fai.dodo.financialapp.shared.Category;
+import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
 
 /**
  * Created by Dodo on 13.04.2018.
@@ -34,7 +36,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final CategorySimple categorySimple = items.get(position);
 
         String categoryName = Category.getCategoryName(categorySimple.getCategory());

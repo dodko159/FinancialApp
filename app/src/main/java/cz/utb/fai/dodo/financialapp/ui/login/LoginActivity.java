@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        //mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
-/*
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -113,9 +113,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent intent = MainActivity.startIntent(LoginActivity.this);
                     startActivity(intent);
+                    finish();
                 }
             }
-        };*/
+        };
     }
 
     private void signIn() {
@@ -153,10 +154,6 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             addUser(user);
-
-                            Intent intent = MainActivity.startIntent(LoginActivity.this);
-                            startActivity(intent);
-                            finish();
 
                             //updateUI(user);
                         } else {

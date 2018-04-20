@@ -14,12 +14,13 @@
     tools:context="cz.utb.fai.dodo.financialapp.ui.main.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/noDataForMonth"
-        android:visibility="@{vm.showNoTransaction}"/>
+        android:visibility="@{vm.showNoTransaction}"
+        android:layout_above="@+id/linearLayoutBottomSwitch"
+        android:background="@drawable/border"/>
 
     <com.razerdp.widget.animatedpieview.AnimatedPieView
         android:id="@+id/animatedPieView"

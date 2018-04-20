@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         tools:context="cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,8 @@
             <LinearLayout
                 android:id="@+id/layoutPrice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/border">
 
                 <Switch
                     android:id="@+id/switchAddTransactionIncome"
@@ -72,18 +73,17 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycleViewAddTransaction"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:layout_constraintTop_toBottomOf="@+id/layoutPrice"
-                android:background="@drawable/border">
+                android:layout_height="match_parent"
+                android:layout_above="@+id/editTextDescription"
+                android:layout_below="@+id/layoutPrice">
 
             </android.support.v7.widget.RecyclerView>
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/editTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:background="@drawable/border"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="@string/enter_description"
@@ -91,9 +91,10 @@
                 android:maxLines="3"
                 android:minLines="3"
                 android:padding="10dp"
-                android:text="@={vm.description}" />
+                android:text="@={vm.description}"
+                android:layout_alignParentBottom="true"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonSave"

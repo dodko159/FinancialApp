@@ -205,8 +205,8 @@ public class MainViewModel extends AndroidViewModel{
     }
 
     private void setUI(Boolean showTransaction) {
-        this.showNoTransaction = showTransaction ? View.VISIBLE : View.GONE;
-        this.showTransaction = showTransaction ? View.GONE : View.VISIBLE;
+        this.showTransaction = showTransaction ? View.VISIBLE : View.GONE;
+        this.showNoTransaction = showTransaction ? View.GONE : View.VISIBLE;
     }
 
     private void setIncomesOrCost(boolean incomes){

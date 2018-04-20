@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_gravity="fill_vertical">
 
-
-    <LinearLayout
-        android:id="@+id/listItemLayout"
+    <TextView
+        android:id="@+id/textViewGridRecycleViewCategory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/textViewGridRecycleViewCategory"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:gravity="center_vertical|center"
-            android:textColor="@color/colorPrimary" />
-    </LinearLayout>
-
-
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="120dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary" />
+</LinearLayout>

@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mAuth.addAuthStateListener(mAuthListener);
+        //mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
-
+/*
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -109,13 +109,13 @@ public class LoginActivity extends AppCompatActivity {
                 if(user != null){
                     pending.set(false);
 
-                    MyShared.setUser(LoginActivity.this, new User(user));
+                    MyShared.setUser(getApplication().getApplicationContext(), new User(user));
 
                     Intent intent = MainActivity.startIntent(LoginActivity.this);
                     startActivity(intent);
                 }
             }
-        };
+        };*/
     }
 
     private void signIn() {
@@ -152,8 +152,12 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-
                             addUser(user);
+
+                            Intent intent = MainActivity.startIntent(LoginActivity.this);
+                            startActivity(intent);
+                            finish();
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

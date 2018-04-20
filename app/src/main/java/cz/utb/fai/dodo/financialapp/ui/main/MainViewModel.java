@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
@@ -52,10 +53,12 @@ public class MainViewModel extends AndroidViewModel{
     private DatabaseReference costRef = FirebaseDatabase.getInstance().getReference(Transaction.COSTS);
 
     private MutableLiveData<HashMap<Integer, Double>> prices = new MutableLiveData<>();
-    HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
+    private MutableLiveData<ArrayList<Float>> percentage = new MutableLiveData<>();
+    private HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
 
-    public int showTransaction;
-    public int showNoTransaction;
+    private int showTransaction;
+    private int showNoTransaction;
+    private String transactionType;
 
     /***** CONSTRUCTOR *****/
     public MainViewModel(@NonNull Application application) {
@@ -64,16 +67,13 @@ public class MainViewModel extends AndroidViewModel{
         this.user = MyShared.getUser(context);
 
         prices.setValue(null);
+        percentage.setValue(null);
     }
 
     /**** GET, SET****/
 
     public void setMonth(String month) {
         this.month = month;
-
-        setListeners();
-
-        setIncomesOrCost(INCOMES);
     }
 
     public MutableLiveData<HashMap<Integer, Double>> getPrices() {
@@ -82,6 +82,18 @@ public class MainViewModel extends AndroidViewModel{
 
     public HashMap<Integer, List<Transaction>> getGroupedMap() {
         return groupedMap;
+    }
+
+    public int getShowTransaction() {
+        return showTransaction;
+    }
+
+    public int getShowNoTransaction() {
+        return showNoTransaction;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
     }
 
     /**** LIFECYCLE METHODS ****/
@@ -102,7 +114,7 @@ public class MainViewModel extends AndroidViewModel{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     processData(INCOMES, Transaction.transactionListFromFirebaseJson(dataSnapshot.getValue().toString()));
-                    update();
+                    setIncomesOrCost(isActiveIncomes);
                 }
             }
 
@@ -117,7 +129,7 @@ public class MainViewModel extends AndroidViewModel{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     processData(COSTS, Transaction.transactionListFromFirebaseJson(dataSnapshot.getValue().toString()));
-                    update();
+                    setIncomesOrCost(isActiveIncomes);
                 }
             }
 
@@ -193,12 +205,8 @@ public class MainViewModel extends AndroidViewModel{
     }
 
     private void setUI(Boolean showTransaction) {
-        this.showTransaction = showTransaction ? View.VISIBLE : View.GONE;
-        this.showNoTransaction = showTransaction ? View.GONE : View.VISIBLE;
-    }
-
-    private void update(){
-        setIncomesOrCost(isActiveIncomes);
+        this.showNoTransaction = showTransaction ? View.VISIBLE : View.GONE;
+        this.showTransaction = showTransaction ? View.GONE : View.VISIBLE;
     }
 
     private void setIncomesOrCost(boolean incomes){
@@ -207,16 +215,22 @@ public class MainViewModel extends AndroidViewModel{
                 prices.setValue(pricesIncomes);
                 groupedMap = groupedMapIncomes;
             }
-
+            transactionType = context.getResources().getString(R.string.income);
             setUI(uiSetings[0]);
         }else {
             if(uiSetings[1]) {
                 prices.setValue(pricesCosts);
                 groupedMap = groupedMapCosts;
             }
-
+            transactionType = context.getResources().getString(R.string.cost);
             setUI(uiSetings[1]);
         }
+    }
+
+    public void start(){
+        setListeners();
+
+        setIncomesOrCost(INCOMES);
     }
 
     public void switchToIncomes(View v){

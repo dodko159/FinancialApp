@@ -51,7 +51,7 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         String catName = categories.get(position);
 
         if(position%2 == 0){
@@ -62,10 +62,12 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
 
         holder.catName.setText(catName);
 
+        final int pos = position;
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClicked(position);
+                listener.onItemClicked(pos);
             }
         });
     }
@@ -84,7 +86,6 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
         this.categories=Arrays.asList(list);
         notifyDataSetChanged();
     }
-
 
      /**** INNER CLASS ****/
 

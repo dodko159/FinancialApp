@@ -87,5 +87,10 @@
         app:backgroundTint="@color/colorAccentDark"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
+    <Button
+        android:id="@+id/buttonProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
 </layout>

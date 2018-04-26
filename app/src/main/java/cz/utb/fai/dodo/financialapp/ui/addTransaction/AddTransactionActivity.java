@@ -2,8 +2,11 @@ package cz.utb.fai.dodo.financialapp.ui.addTransaction;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -22,6 +25,11 @@ public class AddTransactionActivity extends AppCompatActivity implements IAdapte
     private AddTransactionDataBinding addTransactionDataBinding;
     private RecyclerView recyclerView;
     private AddTransactionViewModel viewModel;
+
+    @NonNull
+    public static Intent startIntent(@NonNull FragmentActivity activity) {
+        return new Intent(activity, AddTransactionActivity.class);
+    }
 
     /**** LIVECYCLE METHODS ****/
 

@@ -3,7 +3,7 @@ package cz.utb.fai.dodo.financialapp.ui.main;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -19,15 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.shared.User;
 
 /**
- * Created by Dodo on 30.03.2018.
+ * Created by Dodo on 24.04.2018.
  */
 
-public class MainViewModel extends AndroidViewModel{
+public class TransactionFragmentViewModel extends AndroidViewModel{
 
     /**** CONSTANTS ****/
     private boolean INCOMES = true;
@@ -35,7 +35,6 @@ public class MainViewModel extends AndroidViewModel{
 
     /***** VARS *****/
     private User user;
-    private Context context;
     private String month;
     private Boolean[] uiSetings = {false, false};
     private boolean isActiveIncomes = true;
@@ -56,15 +55,14 @@ public class MainViewModel extends AndroidViewModel{
     private MutableLiveData<ArrayList<Float>> percentage = new MutableLiveData<>();
     private HashMap<Integer, List<Transaction>> groupedMap = new HashMap<>();
 
-    private int showTransaction;
-    private int showNoTransaction;
-    private String transactionType;
+    public ObservableField<Integer> showTransaction = new ObservableField<>();
+    public ObservableField<Integer> showNoTransaction = new ObservableField<>();
+    public ObservableField<String> transactionType = new ObservableField<>("");
 
     /***** CONSTRUCTOR *****/
-    public MainViewModel(@NonNull Application application) {
+    public TransactionFragmentViewModel(@NonNull Application application) {
         super(application);
-        this.context = application.getApplicationContext();
-        this.user = MyShared.getUser(context);
+        this.user = MyShared.getUser(this.getApplication().getApplicationContext());
 
         prices.setValue(null);
         percentage.setValue(null);
@@ -72,28 +70,16 @@ public class MainViewModel extends AndroidViewModel{
 
     /**** GET, SET****/
 
-    public void setMonth(String month) {
+    void setMonth(String month) {
         this.month = month;
     }
 
-    public MutableLiveData<HashMap<Integer, Double>> getPrices() {
+    MutableLiveData<HashMap<Integer, Double>> getPrices() {
         return prices;
     }
 
-    public HashMap<Integer, List<Transaction>> getGroupedMap() {
+    HashMap<Integer, List<Transaction>> getGroupedMap() {
         return groupedMap;
-    }
-
-    public int getShowTransaction() {
-        return showTransaction;
-    }
-
-    public int getShowNoTransaction() {
-        return showNoTransaction;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
     }
 
     /**** LIFECYCLE METHODS ****/
@@ -113,7 +99,6 @@ public class MainViewModel extends AndroidViewModel{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-
                     processData(INCOMES, Transaction.transactionListFromFirebase(dataSnapshot));
                     setIncomesOrCost(isActiveIncomes);
                 }
@@ -129,7 +114,6 @@ public class MainViewModel extends AndroidViewModel{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-
                     processData(COSTS, Transaction.transactionListFromFirebase(dataSnapshot));
                     setIncomesOrCost(isActiveIncomes);
                 }
@@ -207,43 +191,38 @@ public class MainViewModel extends AndroidViewModel{
     }
 
     private void setUI(Boolean showTransaction) {
-        this.showTransaction = showTransaction ? View.VISIBLE : View.GONE;
-        this.showNoTransaction = showTransaction ? View.GONE : View.VISIBLE;
+        int show, noShow;
+        show = showTransaction ? View.VISIBLE : View.GONE;
+        noShow = showTransaction ? View.GONE : View.VISIBLE;
+
+        this.showTransaction.set(show);
+        this.showNoTransaction.set(noShow);
     }
 
-    private void setIncomesOrCost(boolean incomes){
+    void setIncomesOrCost(boolean incomes){
+        isActiveIncomes = incomes;
+
         if(incomes){
             if(uiSetings[0]){
                 prices.setValue(pricesIncomes);
                 groupedMap = groupedMapIncomes;
             }
-            transactionType = context.getResources().getString(R.string.income);
+            transactionType.set(getApplication().getResources().getString(R.string.income));
             setUI(uiSetings[0]);
         }else {
             if(uiSetings[1]) {
                 prices.setValue(pricesCosts);
                 groupedMap = groupedMapCosts;
             }
-            transactionType = context.getResources().getString(R.string.cost);
+            transactionType.set(getApplication().getResources().getString(R.string.cost));
             setUI(uiSetings[1]);
         }
     }
 
-    public void start(){
+    public void init(){
         setListeners();
 
         setIncomesOrCost(INCOMES);
     }
-
-    public void switchToIncomes(View v){
-        setIncomesOrCost(INCOMES);
-        isActiveIncomes = INCOMES;
-    }
-
-    public void switchToCosts(View v){
-        setIncomesOrCost(COSTS);
-        isActiveIncomes = COSTS;
-    }
-
 
 }

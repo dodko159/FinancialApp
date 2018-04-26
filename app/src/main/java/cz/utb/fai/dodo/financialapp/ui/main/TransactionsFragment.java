@@ -4,18 +4,22 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,127 +30,119 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.PieGraph;
-import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
+import cz.utb.fai.dodo.financialapp.databinding.TransactionsFragmentDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
+import cz.utb.fai.dodo.financialapp.shared.MyDate;
+import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.shared.PieGraph;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
 import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
 import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
-import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 
-public class MainActivity extends AppCompatActivity implements IAdapterItemClicked<CategorySimple>{
+/**
+ */
+public class TransactionsFragment extends Fragment implements IAdapterItemClicked<CategorySimple> {
 
     /***** CONSTANTS *****/
-    private static final String USERJSON = "userJson";
+    private static final String ARG_SECTION_MONTH = "section_nonth";
 
     /***** VARS *****/
-    private Button button;
 
-    Button logOutBtn, profileBtn;
+    Context context;
     AnimatedPieView animatedPieView;
-    FloatingActionButton addTransaction;
-    FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    User me = new User();
-    MainViewModel viewModel;
+    TransactionFragmentViewModel viewModel;
     Observer<HashMap<Integer, Double>> observer;
+    SharedPreferences.OnSharedPreferenceChangeListener sharedListener;
 
-    MainActivityDataBinding mainActivityDataBinding;
+    TransactionsFragmentDataBinding fragmentDataBinding;
 
     private RecyclerView recyclerView;
 
-    /***** START METHODS *****/
-    @NonNull
-    public static Intent startIntent(@NonNull Context context) {
-        return new Intent(context, MainActivity.class);
+    public TransactionsFragment() {
     }
 
     /**
-     *
-     * @param context aktualny context
-     * @param userjson user vo formáte json
-     * @return Vrací intent s vloženým objektem user vo formate Json.
+     * Returns a new instance of this fragment for the given section
+     * number.
+     * @param sectionoMonth
      */
-    public static Intent startIntent(@NonNull Context context, String userjson) {
-        Intent intent = startIntent(context);
-        intent.putExtra(USERJSON, userjson);
-
-        return intent;
+    public static TransactionsFragment newInstance(String sectionoMonth) {
+        TransactionsFragment fragment = new TransactionsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SECTION_MONTH, sectionoMonth);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    /***** LIFECYCLE METHODS *****/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.setMonth(MyDate.longTimeToMonthYear(System.currentTimeMillis()));
-        viewModel.start();
+        context = getActivity().getApplicationContext();
 
-        mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mainActivityDataBinding.setVm(viewModel);
+        viewModel = ViewModelProviders.of(this).get(TransactionFragmentViewModel.class);
+        String moth = getArguments().getString(ARG_SECTION_MONTH);
+        viewModel.setMonth(moth);
+        viewModel.init();
+    }
 
-        profileBtn = mainActivityDataBinding.buttonProfile;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        fragmentDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_transactions, container, false);
+        View rootView = fragmentDataBinding.getRoot();
+
+        fragmentDataBinding.setVm(viewModel);
 
         init();
+
+        return rootView;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        setListeners();
 
-        mAuth.addAuthStateListener(mAuthListener);
         viewModel.getPrices().observe(this, observer);
+        MyShared.sGetPrefs(context)
+                .registerOnSharedPreferenceChangeListener(sharedListener);
+
+        viewModel.setIncomesOrCost(MyShared.sGetPrefs(context).getBoolean(MyShared.ISINCOMES, false));
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
+
         viewModel.getPrices().removeObserver(observer);
+        MyShared.sGetPrefs(context)
+                .unregisterOnSharedPreferenceChangeListener(sharedListener);
     }
 
     /**** HELPER METHODS ****/
 
     private void init() {
-        mAuth = FirebaseAuth.getInstance();
 
-        String userjson = null;
+        recyclerView = fragmentDataBinding.transactionRecycleView;
 
-        if (getIntent().getExtras() != null) {
-            userjson = getIntent().getStringExtra(USERJSON);
-        }
-
-        if (userjson != null) {
-            me.userFromJson(userjson);
-        }else{
-            me = MyShared.getUser(this);
-        }
-
-        addTransaction = mainActivityDataBinding.addTransactionButton;
-
-        recyclerView = mainActivityDataBinding.transactionRecycleView;
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        //recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         final AdapterCategory adapter = new AdapterCategory(new ArrayList<CategorySimple>(), this);
-
+/*
         final Map<Integer, Double> map = viewModel.getPrices().getValue();
         if (map == null) {
             adapter.setNewList(new ArrayList<CategorySimple>());
         }else {
             adapter.setNewList(CategorySimple.mapToList(map));
             updatePieView(CategorySimple.mapToList(map));
-        }
+        }*/
 
         recyclerView.setAdapter(adapter);
 
@@ -163,6 +159,21 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
                 }
             }
         };
+
+        setListeners();
+
+    }
+
+    private void setListeners() {
+
+        sharedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if(Objects.equals(key, MyShared.ISINCOMES)){
+                    viewModel.setIncomesOrCost(sharedPreferences.getBoolean(key, false));
+                }
+            }
+        };
     }
 
     private void updatePieView(List<CategorySimple> categorySimples) {
@@ -176,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
     }
 
     private void setPieView(double sum, List<CategorySimple> categorySimples) {
-        animatedPieView = mainActivityDataBinding.animatedPieView;
+        animatedPieView = fragmentDataBinding.animatedPieView;
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
 
         List<Integer> colors = prepearColors(categorySimples.size());
@@ -217,49 +228,12 @@ public class MainActivity extends AppCompatActivity implements IAdapterItemClick
         return  colors;
     }
 
-    private void setListeners(){
-       /*logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-            }
-        });
-*/
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = UserProfile.startIntent(MainActivity.this);
-                //startActivity(intent);
-
-                startActivity(new Intent(MainActivity.this, MainTabActivity.class));
-            }
-        });
-
-       addTransaction.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = AddTransactionActivity.startIntent(MainActivity.this);
-               startActivity(intent);
-           }
-       });
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if(user == null){
-                    finish();
-                }
-            }
-        };
-    }
-
     @Override
     public void onItemClicked(CategorySimple categorySimple) {
 
         List<Transaction> transactions = viewModel.getGroupedMap().get(categorySimple.getCategory());
 
-        Intent intent = CategoryDetail.startIntent(this, transactions, categorySimple.getPriceSum(), categorySimple.getCategory());
+        Intent intent = CategoryDetail.startIntent(getActivity(), transactions, categorySimple.getPriceSum(), categorySimple.getCategory());
         startActivity(intent);
     }
 }

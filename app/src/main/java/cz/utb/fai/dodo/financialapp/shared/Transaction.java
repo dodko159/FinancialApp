@@ -11,6 +11,7 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ public class Transaction {
     private String description;
 
     /****  CONSTRUCTOR ****/
+
+    public Transaction(){}
 
     public Transaction(long transactionDate, int category, double price, String description) {
         this.transactionDate = transactionDate;
@@ -168,19 +171,19 @@ public class Transaction {
     }
 
     /***
-     * Prelozi data z Jsonu
-     * @param transJson tranzakcie vo formate Json (String)
+     * Prelozi data z Firebase
+     * @param dataSnapshot tranzakcie vo formate DataSnapshot
      * @return vrati data v podobe List< Transaction >
      */
     @Nullable
-    public static List<Transaction> transactionListFromFirebaseJson(@NonNull String transJson) {
+    public static List<Transaction> transactionListFromFirebase(DataSnapshot dataSnapshot) {
 
-        Type fooType = new TypeToken<HashMap<String, Transaction>>() {}.getType();
-        JsonReader reader = new JsonReader(new StringReader(transJson.trim()));
-        reader.setLenient(true);
+        List<Transaction> transactions = new ArrayList<>();
 
-        HashMap map = new Gson().fromJson(reader, fooType);
-        List transactions = new ArrayList<Transaction>(map.values());
+        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+            Transaction transaction = snapshot.getValue(Transaction.class);
+            transactions.add(transaction);
+        }
 
         return transactions;
     }

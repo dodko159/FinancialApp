@@ -14,6 +14,7 @@ public class MyShared {
 
     private static final String SHARED = "finShared";
     private static final String USERJSON = "userJson";
+    public static final String ISINCOMES = "isInscomes";
 
     /**** ACCESSOR METHODS *****/
     /**
@@ -54,6 +55,8 @@ public class MyShared {
         setString(context, key, transactions);
     }
 
+
+    //todo skontrolovat a asi zmazat
     /***
      * Nacita data z pamäte
      * @param context aktualny kontext
@@ -65,7 +68,7 @@ public class MyShared {
         String transJson = sGetPrefs(context).getString(key,null);
 
         if(transJson != null){
-            myList = Transaction.transactionListFromFirebaseJson(transJson);
+           // myList = Transaction.transactionListFromFirebase(transJson);
         }
 
         return myList;
@@ -92,12 +95,30 @@ public class MyShared {
         sGetPrefs(context).edit().putString(key, value).apply();
     }
 
+    /**
+     *
+     * @param context kontext
+     * @param isIncomes boolean ci sa ma nacitat incomes alebo costs
+     */
+    public static void setIsIncomes(@NonNull Context context, boolean isIncomes){
+        sGetPrefs(context).edit().putBoolean(ISINCOMES,isIncomes).apply();
+    }
+
+    /***
+     * nacita hodnotu z sharedPreferences
+     * @param context kontext
+     * @return boolean ci sa ma nacitat incomes alebo costs
+     */
+    public static boolean getIsIncomes(@NonNull Context context){
+        return sGetPrefs(context).getBoolean(ISINCOMES, false);
+    }
+
     /***
      *
      * @param context aktualny kontext
      * @return vrati instanciu SharedPreferences
      */
-    private static SharedPreferences sGetPrefs(@NonNull Context context) {
+    public static SharedPreferences sGetPrefs(@NonNull Context context) {
         return context.getSharedPreferences(SHARED, Context.MODE_PRIVATE);
     }
 }

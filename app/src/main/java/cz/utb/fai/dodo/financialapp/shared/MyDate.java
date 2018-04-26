@@ -6,8 +6,10 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -62,5 +64,19 @@ public class MyDate {
         //Format format = DateFormat.getDateTimeInstance().getNumberFormat();
         Format format = new SimpleDateFormat(dateFormat);
         return format.format(date);
+    }
+
+    /***
+     * Konvertuje datum y formatu Year_Month (2018_3) do Motnh Year (March 2018)
+     * @param key kluc z Firebase vo formate YYYY_M
+     * @return string s nazvom mesiaca a rokom - Month YYYY
+     */
+    @NonNull
+    public static String toPreatyMonthYear(@NonNull String key) {
+
+            String[] ym = key.split("_");
+            String month = getMonthName(Integer.parseInt(ym[1]));
+
+        return month + " " + ym[0];
     }
 }

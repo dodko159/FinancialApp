@@ -24,11 +24,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.ui.main.MainActivity;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.databinding.LoginDataBinding;
+import cz.utb.fai.dodo.financialapp.ui.main.MainTabActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     MyShared.setUser(getApplication().getApplicationContext(), new User(user));
 
-                    Intent intent = MainActivity.startIntent(LoginActivity.this);
+                    Intent intent = MainTabActivity.startIntent(LoginActivity.this);
                     startActivity(intent);
                     finish();
                 }
@@ -153,7 +153,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUser(user);
+
+                            DBManager.ckeckUserInDB(user, LoginActivity.this);
 
                             //updateUI(user);
                         } else {
@@ -165,17 +166,5 @@ public class LoginActivity extends AppCompatActivity {
                         // ...
                     }
                 });
-    }
-
-    private void addUser(FirebaseUser user) {
-        me = new User(user);
-
-        Boolean isInDB = dbManager.ckeckUserInDB(user.getUid());
-
-        if(isInDB){
-            Toast.makeText(LoginActivity.this, R.string.welcome_back,Toast.LENGTH_SHORT).show();
-        }else {
-            dbManager.saveUserToDB(me);
-        }
     }
 }

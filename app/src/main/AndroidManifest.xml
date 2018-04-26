@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.login.LoginActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,10 @@
             android:label="@string/profile" />
         <activity android:name=".ui.detail.transaction.TransactionDetail" />
         <activity android:name=".ui.detail.category.CategoryDetail" />
-        <activity android:name=".ui.addTransaction.AddTransactionActivity"></activity>
+        <activity android:name=".ui.addTransaction.AddTransactionActivity" />
+        <activity
+            android:name=".ui.main.MainTabActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

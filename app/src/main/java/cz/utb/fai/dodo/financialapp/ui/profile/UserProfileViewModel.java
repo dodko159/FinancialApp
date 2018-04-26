@@ -19,14 +19,12 @@ public class UserProfileViewModel extends AndroidViewModel {
     /**** VARS ****/
     private User user;
     private String name, surname, mail;
-    private Context context;
 
     /**** CONSTRUCTOR ****/
     UserProfileViewModel(@NonNull Application application) {
         super(application);
 
-        this.context = application.getApplicationContext();
-        this.user = MyShared.getUser(context);
+        this.user = MyShared.getUser(application);
 
         this.name = user.getName();
         this.surname = user.getSurName();
@@ -66,13 +64,13 @@ public class UserProfileViewModel extends AndroidViewModel {
      */
     public void save(View view){
 
-        user = MyShared.getUser(context);
+        user = MyShared.getUser(this.getApplication());
 
         user.setName(name);
         user.setSurName(surname);
         user.setMail(mail);
 
-        MyShared.setUser(context, user);
+        MyShared.setUser(this.getApplication(), user);
         DBManager.updateUserInDB(user);
     }
 }

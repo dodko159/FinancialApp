@@ -32,8 +32,6 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
 
     /***** VARS *****/
     CategoryDetailDataBinding categoryDetailDataBinding;
-    private CategoryDetailViewModel viewModel;
-    private RecyclerView recyclerView;
 
     /***** START METHODS *****/
     @NonNull
@@ -49,7 +47,7 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
      */
     public static Intent startIntent(@NonNull Context context, List<Transaction> transactions, double total, int category) {
         Intent intent = startIntent(context);
-        //todo: skontrolovat toString
+
         intent.putExtra(TRANSACTIONS, transactions.toString()).putExtra(TOTALPRICE, total).putExtra(CATEGORY, category);
 
         return intent;
@@ -66,17 +64,21 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
             transjson = getIntent().getStringExtra(TRANSACTIONS);
         }
 
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
 
         if(transjson != null){
             transactions = Transaction.transactionListFromJson(transjson);
+            init(transactions);
         }else{
-            //todo nieco
-            Toast.makeText(this,R.string.transaction_loading_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.transactions_loading_error, Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
 
-        viewModel = ViewModelProviders.of(this).get(CategoryDetailViewModel.class);
+    /***** HELPER METHODS *****/
+
+    private void init(List<Transaction> transactions) {
+        CategoryDetailViewModel viewModel = ViewModelProviders.of(this).get(CategoryDetailViewModel.class);
         viewModel.setTransactions(transactions);
 
         if (getIntent().getExtras() != null){
@@ -87,12 +89,8 @@ public class CategoryDetail extends AppCompatActivity implements IAdapterItemCli
         categoryDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail);
         categoryDetailDataBinding.setVm(viewModel);
 
-        recyclerView = categoryDetailDataBinding.recycleViewCategory;
+        RecyclerView recyclerView = categoryDetailDataBinding.recycleViewCategory;
 
-        init();
-    }
-
-    private void init() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));

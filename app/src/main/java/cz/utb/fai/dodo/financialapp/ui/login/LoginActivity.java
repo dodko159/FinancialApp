@@ -26,7 +26,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.databinding.LoginDataBinding;
 import cz.utb.fai.dodo.financialapp.ui.main.MainTabActivity;
 
@@ -109,8 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(user != null){
                     pending.set(false);
 
-                    MyShared.setUser(getApplication().getApplicationContext(), new User(user));
-
                     Intent intent = MainTabActivity.startIntent(LoginActivity.this);
                     startActivity(intent);
                     finish();
@@ -154,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            DBManager.ckeckUserInDB(user, LoginActivity.this);
+                            DBManager.ckeckUserInDBandSave(user, LoginActivity.this);
 
                             //updateUI(user);
                         } else {

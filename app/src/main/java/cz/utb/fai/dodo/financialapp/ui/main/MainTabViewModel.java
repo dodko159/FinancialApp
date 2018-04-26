@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,15 +44,13 @@ public class MainTabViewModel extends AndroidViewModel {
     private List<String> incomeMoths = new ArrayList<>();
     private List<String> costMonths = new ArrayList<>();
 
-    private User user;
+    private String userID;
     private boolean mothsDownloaded = false;
-    private Context context;
 
     /***** CONSTRUCTOR *****/
     public MainTabViewModel(@NonNull Application application) {
         super(application);
-        this.context = application.getApplicationContext();
-        this.user = MyShared.getUser(context);
+        this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -121,8 +120,8 @@ public class MainTabViewModel extends AndroidViewModel {
             }
         };
 
-        incomeRef.child(user.getUid()).addListenerForSingleValueEvent(listenerForIncomes);
-        costRef.child(user.getUid()).addListenerForSingleValueEvent(listenerForCosts);
+        incomeRef.child(userID).addListenerForSingleValueEvent(listenerForIncomes);
+        costRef.child(userID).addListenerForSingleValueEvent(listenerForCosts);
     }
 
     private List<String> joinMonths(List<String> moths) {
@@ -151,10 +150,10 @@ public class MainTabViewModel extends AndroidViewModel {
     }
 
     public void switchToIncomes(View v){
-        MyShared.setIsIncomes(context, INCOMES);
+        MyShared.setIsIncomes(this.getApplication(), INCOMES);
     }
 
     public void switchToCosts(View v){
-        MyShared.setIsIncomes(context, COSTS);
+        MyShared.setIsIncomes(this.getApplication(), COSTS);
     }
 }

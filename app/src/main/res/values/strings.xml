@@ -14,7 +14,8 @@
     <string name="income">Income</string>
     <string name="cost">Cost</string>
     <string name="noDataForMonth">No data available for this month</string>
-    <string name="transaction_loading_error">Error while loading transction</string>
+    <string name="transaction_loading_error">Error while loading transaction</string>
+    <string name="transactions_loading_error">Error while loading transactions</string>
     <string name="note">Note</string>
     <string name="date">Date</string>
     <string name="title_activity_add_transaction">Add transaction</string>
@@ -34,6 +35,29 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array
+        name="incomes_array">
+        <item>Other</item>
+        <item>Work</item>
+        <item>Loan</item>
+        <item>Win</item>
+        <item>Gift</item>
+    </string-array>
+
+    <string-array
+        name="costs_array">
+        <item>Other</item>
+        <item>Food</item>
+        <item>Clothes</item>
+        <item>Traveling</item>
+        <item>Car</item>
+        <item>Children</item>
+        <item>Holiday</item>
+        <item>Home</item>
+        <item>Entertainment</item>
+        <item>Service</item>
+        <item>Animals</item>
+        <item>Bills</item>
+        <item>Electronics</item>
+    </string-array>
 </resources>

@@ -56,8 +56,7 @@ public class DBManager{
      * @return Vrati prihlaseneho uzivatela
      */
     @NonNull
-    public static User loadUserFromDB(){
-        //todo upravit
+    public static User loadUserFromAuth(){
         return new User(firebaseAuth.getCurrentUser());
     }
 
@@ -67,7 +66,7 @@ public class DBManager{
      * @return true ak je uzivatel v databazi false ak nieje
      */
     @NonNull
-    public static void ckeckUserInDB(FirebaseUser user, Context context){
+    public static void ckeckUserInDBandSave(FirebaseUser user, Context context){
 
         final User me = new User(user);
         final Context con = context;
@@ -76,11 +75,17 @@ public class DBManager{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                User loadedUser;
+
                 if(dataSnapshot.exists()){
+                    loadedUser = dataSnapshot.getValue(User.class);
                     Toast.makeText(con, R.string.welcome_back,Toast.LENGTH_SHORT).show();
                 }else {
                     saveUserToDB(me);
+                    loadedUser = me;
                 }
+
+                MyShared.setUser(con,loadedUser);
 
             }
 
@@ -115,7 +120,7 @@ public class DBManager{
         ref.setValue(transaction);
     }
 
-    // todo upravit
+    // todo upravit - mozno aj zmazat
     /***
      * Nacita tranzakcie s databaze
      * @param context aktualny kontext

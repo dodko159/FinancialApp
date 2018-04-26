@@ -7,15 +7,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
-import java.io.StringReader;
 import java.lang.reflect.Type;
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -104,8 +99,7 @@ public class Transaction {
      */
     @Override
     public String toString() {
-        String json = new Gson().toJson(this);
-        return json;
+        return new Gson().toJson(this);
     }
 
     /***
@@ -150,7 +144,6 @@ public class Transaction {
      * @param transJson tranzakcie vo formate Json (String)
      * @return vrati data v podobe mapy < kluc, List< Transaction >>
      */
-    @Nullable
     public static Map<String, List<Transaction>> transactionMapFromFirebaseJson2(@NonNull String transJson) {
         Map<String, LinkedTreeMap> myMap;
         Map<String, List<Transaction>> mapList = new HashMap<>();
@@ -175,7 +168,6 @@ public class Transaction {
      * @param dataSnapshot tranzakcie vo formate DataSnapshot
      * @return vrati data v podobe List< Transaction >
      */
-    @Nullable
     public static List<Transaction> transactionListFromFirebase(DataSnapshot dataSnapshot) {
 
         List<Transaction> transactions = new ArrayList<>();

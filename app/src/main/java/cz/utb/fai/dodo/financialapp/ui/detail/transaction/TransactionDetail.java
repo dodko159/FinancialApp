@@ -53,25 +53,25 @@ public class TransactionDetail extends AppCompatActivity {
 
         Transaction transaction = null;
 
-        if(transjson != null){
+        if(transjson == null){
             transaction = Transaction.fromString(transjson);
+
+            init(transaction);
         }else{
-            //todo nieco
             Toast.makeText(this,R.string.transaction_loading_error, Toast.LENGTH_SHORT).show();
             finish();
         }
+
+    }
+
+    /**** HELPER METHODS *****/
+
+    private void init(Transaction transaction) {
 
         TransactionDetailViewModel viewModel = ViewModelProviders.of(this).get(TransactionDetailViewModel.class);
         viewModel.setTransaction(transaction);
 
         transactionDetailDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_detail);
         transactionDetailDataBinding.setVm(viewModel);
-
-        init();
-    }
-
-    /**** HELPER METHODS ****/
-    private void init() {
-
     }
 }

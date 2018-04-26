@@ -36,8 +36,7 @@ public class MyShared {
         String userjson = sGetPrefs(context).getString(MyShared.USERJSON,null);
 
         if(userjson == null){
-            user = new User();
-            DBManager.loadUserFromDB();
+            user = DBManager.loadUserFromAuth();
         }else{
             user.userFromJson(userjson);
         }

@@ -39,7 +39,6 @@ import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 public class MainTabActivity extends AppCompatActivity {
 
     //todo zobrazenie grafu - bud zmensit alebo scrolovat
-    //todo pridat CZK za cisla a celkovu cenu do grafu
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

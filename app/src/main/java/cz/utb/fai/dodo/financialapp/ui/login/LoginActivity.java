@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthListener;
     LoginDataBinding activityBinding;
     public final ObservableBoolean pending = new ObservableBoolean(false);
-    DBManager dbManager = new DBManager();
 
     FirebaseUser user;
     User me;

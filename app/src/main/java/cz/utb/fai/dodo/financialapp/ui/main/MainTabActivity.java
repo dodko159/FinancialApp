@@ -3,12 +3,14 @@ package cz.utb.fai.dodo.financialapp.ui.main;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,15 +20,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
+import cz.radovanholik.library.utils.Utils;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.databinding.MainTabDataBinding;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
+import cz.utb.fai.dodo.financialapp.shared.MyShared;
 import cz.utb.fai.dodo.financialapp.shared.adapters.SectionsPagerAdapter;
 import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
 import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
@@ -86,6 +91,7 @@ public class MainTabActivity extends AppCompatActivity {
             }
         });
 
+        checkInternet();
         setListeners();
     }
 
@@ -177,5 +183,26 @@ public class MainTabActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    /**
+     * Zobrazi dialogove okno ak nieje pristup k internetu
+     */
+    private void checkInternet() {
+        if(!Utils.isInternetAvailable(this) && !MyShared.wasInternetDialogShown(getApplication())){
+            /* no internet dialog */
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(R.string.no_internet_title);
+            alertDialog.setMessage(getResources().getString(R.string.no_internet_text));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
+            MyShared.internetDialogShown(getApplication(), true);
+        }
     }
 }

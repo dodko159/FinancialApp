@@ -15,6 +15,7 @@ public class MyShared {
     private static final String SHARED = "finShared";
     private static final String USERJSON = "userJson";
     public static final String ISINCOMES = "isInscomes";
+    public static final String INTERNETDIALOG = "internetDialogShown";
 
     /**** ACCESSOR METHODS *****/
     /**
@@ -119,5 +120,13 @@ public class MyShared {
      */
     public static SharedPreferences sGetPrefs(@NonNull Context context) {
         return context.getSharedPreferences(SHARED, Context.MODE_PRIVATE);
+    }
+
+    public static void internetDialogShown(@NonNull Context context, boolean shown) {
+        sGetPrefs(context).edit().putBoolean(INTERNETDIALOG, shown).apply();
+    }
+
+    public static Boolean wasInternetDialogShown(@NonNull Context context){
+        return sGetPrefs(context).getBoolean(INTERNETDIALOG, false);
     }
 }

@@ -53,7 +53,7 @@ public class TransactionDetail extends AppCompatActivity {
 
         Transaction transaction = null;
 
-        if(transjson == null){
+        if(transjson != null){
             transaction = Transaction.fromString(transjson);
 
             init(transaction);

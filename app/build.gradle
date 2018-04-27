@@ -45,6 +45,8 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.google.code.gson:gson:2.8.2'
+
+    compile 'com.github.radovanholik:connectivity-informer:1.0.1'
     // graph
     compile 'com.github.razerdp:AnimatedPieView:1.2.3'
     testCompile 'junit:junit:4.12'

@@ -27,13 +27,26 @@ public class DBManager{
     private static final String INCOMES = Transaction.INCOMES;
     private static final String COSTS = Transaction.COSTS;
 
-    private static DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(USERS);
-    private static DatabaseReference incomeRef = FirebaseDatabase.getInstance().getReference(INCOMES);
-    private static DatabaseReference costRef = FirebaseDatabase.getInstance().getReference(COSTS);
+    private static DatabaseReference userRef;
+    private static DatabaseReference incomeRef;
+    private static DatabaseReference costRef;
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     /**** ****/
+
+    /***
+     * inicializuje DB
+     */
+    public static void initDB(){
+        FirebaseDatabase fire = FirebaseDatabase.getInstance();
+        fire.setPersistenceEnabled(true);
+
+        userRef = fire.getReference(USERS);
+        incomeRef = fire.getReference(INCOMES);
+        costRef = fire.getReference(COSTS);
+    }
+
     /***
      * Uklada uzivatela do DB
      * @param user uzivatel, ktoreho ma ulozit

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import cz.utb.fai.dodo.financialapp.shared.Category;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
+import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
 /**
@@ -29,7 +30,7 @@ public class TransactionDetailViewModel extends AndroidViewModel{
         this.transaction = transaction;
 
         this.categoryName = Category.getCategoryName(transaction.getCategory());
-        this.price = String.valueOf(transaction.getPrice()) + " " + Transaction.CURRENCY;
+        this.price = NumberFormatter.formateNumber(transaction.getPrice(), ' ') + " " + Transaction.CURRENCY;
         this.date = MyDate.longTimeToDate(transaction.getTransactionDate());
         this.description = transaction.getDescription();
     }

@@ -13,6 +13,7 @@ import java.util.List;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.shared.MyDate;
+import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
 /**
@@ -40,7 +41,7 @@ public class AdapterTransaction extends RecyclerView.Adapter<AdapterTransaction.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Transaction transaction = listItems.get(position);
-        String price = transaction.getPrice()+"";
+        String price = NumberFormatter.formateNumber(transaction.getPrice(), ' ') + " " + Transaction.CURRENCY;
 
         holder.date.setText(MyDate.longTimeToDate(transaction.getTransactionDate()));
         holder.price.setText(price);

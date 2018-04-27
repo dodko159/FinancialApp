@@ -10,7 +10,7 @@ public class TransactionListItem {
 
     public TransactionListItem(Long date, double price){
         this.date = MyDate.longTimeToDate(date);
-        this.price = String.valueOf(price) + " " + Transaction.CURRENCY;
+        this.price = NumberFormatter.formateNumber(price, ' ') + " " + Transaction.CURRENCY;
     }
 
     public TransactionListItem(String date, String price){

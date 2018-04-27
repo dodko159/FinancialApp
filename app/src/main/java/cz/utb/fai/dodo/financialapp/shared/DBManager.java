@@ -28,8 +28,8 @@ public class DBManager{
     private static final String COSTS = Transaction.COSTS;
 
     private static DatabaseReference userRef;
-    private static DatabaseReference incomeRef;
-    private static DatabaseReference costRef;
+    public static DatabaseReference incomeRef;
+    public static DatabaseReference costRef;
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 

@@ -22,8 +22,9 @@ import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategoryGrid;
 
 public class AddTransactionActivity extends AppCompatActivity implements IAdapterItemClicked<Integer>{
 
+    //todo nejak zobrazit vybratu kategoriu
+
     private AddTransactionDataBinding addTransactionDataBinding;
-    private RecyclerView recyclerView;
     private AddTransactionViewModel viewModel;
 
     @NonNull
@@ -48,7 +49,14 @@ public class AddTransactionActivity extends AppCompatActivity implements IAdapte
         viewModel.getCloseActivity().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean){
+                Boolean finish;
+                if (aBoolean == null) {
+                    finish = false;
+                }
+                else {
+                    finish = aBoolean;
+                }
+                if(finish){
                     AddTransactionActivity.this.finish();
                 }
             }
@@ -61,7 +69,7 @@ public class AddTransactionActivity extends AppCompatActivity implements IAdapte
         viewModel = ViewModelProviders.of(this).get(AddTransactionViewModel.class);
         addTransactionDataBinding.setVm(viewModel);
 
-        recyclerView = addTransactionDataBinding.recycleViewAddTransaction;
+        RecyclerView recyclerView = addTransactionDataBinding.recycleViewAddTransaction;
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -76,7 +84,14 @@ public class AddTransactionActivity extends AppCompatActivity implements IAdapte
         viewModel.getIncomeLive().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean){
+                Boolean in;
+                if (aBoolean == null) {
+                    in = false;
+                }
+                else {
+                    in = aBoolean;
+                }
+                if(in){
                     adapter.setNewList(Category.getIncome());
                 }else {
                     adapter.setNewList(Category.getCost());

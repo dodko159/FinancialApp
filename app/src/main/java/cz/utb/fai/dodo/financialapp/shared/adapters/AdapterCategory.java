@@ -12,6 +12,8 @@ import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.shared.Category;
 import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
+import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
+import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
 /**
  * Created by Dodo on 13.04.2018.
@@ -40,7 +42,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         final CategorySimple categorySimple = items.get(position);
 
         String categoryName = Category.getCategoryName(categorySimple.getCategory());
-        String sum = categorySimple.getPriceSum()+"";
+        String sum = NumberFormatter.formateNumber(categorySimple.getPriceSum(), ' ') + " " + Transaction.CURRENCY;
 
         holder.categoryName.setText(categoryName);
         holder.priceSum.setText(sum);

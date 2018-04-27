@@ -4,6 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 import java.util.List;
+
+import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 
 /**
@@ -33,7 +35,7 @@ public class CategoryDetailViewModel extends AndroidViewModel{
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-        suma = totalPrice + " " + Transaction.CURRENCY;
+        suma = NumberFormatter.formateNumber(totalPrice, ' ') + " " + Transaction.CURRENCY;
     }
 
     public void setCategoryName(String categoryName) {

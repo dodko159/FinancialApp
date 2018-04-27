@@ -14,12 +14,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import cz.utb.fai.dodo.financialapp.R;
+import cz.utb.fai.dodo.financialapp.shared.DBManager;
 import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
 import cz.utb.fai.dodo.financialapp.shared.Transaction;
 import cz.utb.fai.dodo.financialapp.shared.User;
 
@@ -48,8 +55,8 @@ public class TransactionFragmentViewModel extends AndroidViewModel{
     private ValueEventListener listenerForIncomes;
     private ValueEventListener listenerForCosts;
 
-    private DatabaseReference incomeRef = FirebaseDatabase.getInstance().getReference(Transaction.INCOMES);
-    private DatabaseReference costRef = FirebaseDatabase.getInstance().getReference(Transaction.COSTS);
+    private DatabaseReference incomeRef = DBManager.incomeRef;
+    private DatabaseReference costRef = DBManager.costRef;
 
     private MutableLiveData<HashMap<Integer, Double>> prices = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Float>> percentage = new MutableLiveData<>();
@@ -58,6 +65,7 @@ public class TransactionFragmentViewModel extends AndroidViewModel{
     public ObservableField<Integer> showTransaction = new ObservableField<>();
     public ObservableField<Integer> showNoTransaction = new ObservableField<>();
     public ObservableField<String> transactionType = new ObservableField<>("");
+    public ObservableField<String> transactionSuma = new ObservableField<>();
 
     /***** CONSTRUCTOR *****/
     public TransactionFragmentViewModel(@NonNull Application application) {
@@ -206,6 +214,7 @@ public class TransactionFragmentViewModel extends AndroidViewModel{
             if(uiSetings[0]){
                 prices.setValue(pricesIncomes);
                 groupedMap = groupedMapIncomes;
+                recalcSum();
             }
             transactionType.set(getApplication().getResources().getString(R.string.income));
             setUI(uiSetings[0]);
@@ -213,6 +222,7 @@ public class TransactionFragmentViewModel extends AndroidViewModel{
             if(uiSetings[1]) {
                 prices.setValue(pricesCosts);
                 groupedMap = groupedMapCosts;
+                recalcSum();
             }
             transactionType.set(getApplication().getResources().getString(R.string.cost));
             setUI(uiSetings[1]);
@@ -225,4 +235,13 @@ public class TransactionFragmentViewModel extends AndroidViewModel{
         setIncomesOrCost(INCOMES);
     }
 
+    private void recalcSum(){
+        double sum = 0;
+
+        for(Map.Entry<Integer, Double> entry : prices.getValue().entrySet()) {
+            sum += entry.getValue();
+        }
+
+        transactionSuma.set(NumberFormatter.formateNumber(sum, ' ') + " " + Transaction.CURRENCY);
+    }
 }

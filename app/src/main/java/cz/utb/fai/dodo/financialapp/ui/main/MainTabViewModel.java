@@ -80,13 +80,15 @@ public class MainTabViewModel extends AndroidViewModel {
                 if (dataSnapshot.exists()) {
                     List<String> keys = dataSnapshotToListKeys(dataSnapshot.getValue());
 
-                    if(mothsDownloaded){
-                        keys = joinMonths(keys);
-                        Collections.sort(keys);
-                        months.setValue(keys);
-                    }else {
-                        setIncomeMoths(keys);
-                        mothsDownloadedTrue();
+                    if(months.getValue() == null || months.getValue().size() == 0) {
+                        if (mothsDownloaded) {
+                            keys = joinMonths(keys);
+                            Collections.sort(keys);
+                            months.setValue(keys);
+                        } else {
+                            setIncomeMoths(keys);
+                            mothsDownloadedTrue();
+                        }
                     }
                 }
             }
@@ -103,13 +105,15 @@ public class MainTabViewModel extends AndroidViewModel {
                 if (dataSnapshot.exists()) {
                     List<String> keys = dataSnapshotToListKeys(dataSnapshot.getValue());
 
-                    if(mothsDownloaded){
-                        keys = joinMonths(keys);
-                        Collections.sort(keys);
-                        months.setValue(keys);
-                    }else {
-                        setCostMonths(keys);
-                        mothsDownloadedTrue();
+                    if(months.getValue() == null || months.getValue().size() == 0){
+                        if(mothsDownloaded){
+                            keys = joinMonths(keys);
+                            Collections.sort(keys);
+                            months.setValue(keys);
+                        }else {
+                            setCostMonths(keys);
+                            mothsDownloadedTrue();
+                        }
                     }
                 }
             }

@@ -36,6 +36,11 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="no_internet_title">No internet</string>
     <string name="no_internet_text">You are currently offline. Please activate your internet to update your transactions if possible.</string>
+    <string name="want_delete_title">Delete transaction?</string>
+    <string name="want_delete_text">Do you really want delete this transaction?</string>
+    <string name="NO">No</string>
+    <string name="YES">Yes</string>
+    <string name="TRANSACTION_WILL_BE_DELETE">Transaction will be delete.</string>
 
     <string-array
         name="incomes_array">

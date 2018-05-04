@@ -14,7 +14,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.ui.main.MainTabActivity;
 
 /**
  * Created by Dodo on 27.03.2018.
@@ -192,5 +191,23 @@ public class DBManager{
                 Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
             }
         });
+    }
+
+    /**
+     * Zmeaže danú transakciu
+     * @param transaction transakcia, ktorú má vymazať
+     */
+    public static void removeTransaction(String uid, Transaction transaction) {
+        final String date = MyDate.longTimeToMonthYear(transaction.getTransactionDate());
+        final String id = transaction.getUid();
+        final DatabaseReference dbRef;
+
+        if(transaction.getCategory() < Category.OFFSET){
+            dbRef = DBManager.incomeRef;
+        }else{
+            dbRef = DBManager.costRef;
+        }
+
+        dbRef.child(uid).child(date).child(id).removeValue();
     }
 }

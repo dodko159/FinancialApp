@@ -80,16 +80,8 @@ public class MainTabViewModel extends AndroidViewModel {
                 if (dataSnapshot.exists()) {
                     List<String> keys = dataSnapshotToListKeys(dataSnapshot.getValue());
 
-                    if(months.getValue() == null || months.getValue().size() == 0) {
-                        if (mothsDownloaded) {
-                            keys = joinMonths(keys);
-                            Collections.sort(keys);
-                            months.setValue(keys);
-                        } else {
-                            setIncomeMoths(keys);
-                            mothsDownloadedTrue();
-                        }
-                    }
+                    setIncomeMoths(keys);
+                    months.setValue( joinMonths());
                 }
             }
 
@@ -105,16 +97,10 @@ public class MainTabViewModel extends AndroidViewModel {
                 if (dataSnapshot.exists()) {
                     List<String> keys = dataSnapshotToListKeys(dataSnapshot.getValue());
 
-                    if(months.getValue() == null || months.getValue().size() == 0){
-                        if(mothsDownloaded){
-                            keys = joinMonths(keys);
-                            Collections.sort(keys);
-                            months.setValue(keys);
-                        }else {
-                            setCostMonths(keys);
-                            mothsDownloadedTrue();
-                        }
-                    }
+                   // if(months.getValue() == null || months.getValue().size() == 0){
+
+                    setCostMonths(keys);
+                    months.setValue( joinMonths());
                 }
             }
 
@@ -128,17 +114,17 @@ public class MainTabViewModel extends AndroidViewModel {
         costRef.child(userID).addListenerForSingleValueEvent(listenerForCosts);
     }
 
-    private List<String> joinMonths(List<String> moths) {
-        List<String> allMoths = new ArrayList<>(moths);
+    private List<String> joinMonths() {
+        List<String> allMoths = new ArrayList<>();
 
         allMoths.addAll(costMonths);
         allMoths.addAll(incomeMoths);
 
-        return new ArrayList<>(new LinkedHashSet<>(allMoths));
-    }
+        allMoths = new ArrayList<>(new LinkedHashSet<>(allMoths));
 
-    private void mothsDownloadedTrue() {
-        mothsDownloaded = true;
+        Collections.sort(allMoths);
+
+        return allMoths;
     }
 
     /***

@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -86,6 +87,8 @@ public class MainTabActivity extends AppCompatActivity {
 
         addTransaction = dataBinding.addTransactionButton;
 
+        mViewPager = dataBinding.container;
+
         viewModel.getMonths().observe(this, new Observer<List<String>>(){
             @Override
             public void onChanged(@Nullable List<String> strings) {
@@ -149,16 +152,19 @@ public class MainTabActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), moths);
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = dataBinding.container;
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = dataBinding.tabs;
+        tabLayout.removeAllTabs();
 
         TabLayout.Tab tab;
         for (String month : moths) {
             tab = tabLayout.newTab().setText(MyDate.toPreatyMonthYear(month));
             tabLayout.addTab(tab);
         }
+
+        mViewPager.clearOnPageChangeListeners();
+        tabLayout.clearOnTabSelectedListeners();
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));

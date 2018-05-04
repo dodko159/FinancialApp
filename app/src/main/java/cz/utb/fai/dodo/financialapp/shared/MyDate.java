@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +27,12 @@ public class MyDate {
      * @return Vrati nazov mesiaca
      */
     public static String getMonthName(int month){
-        return new DateFormatSymbols().getMonths()[month - 1];
+        DateFormat formatter = new SimpleDateFormat("LLLL", Locale.getDefault());
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, month-1);
+
+        return formatter.format(calendar.getTime());
     }
 
     /***
@@ -62,7 +68,7 @@ public class MyDate {
     public static String longTimeToDate(Long time){
         Date date = new Date(time);
         //Format format = DateFormat.getDateTimeInstance().getNumberFormat();
-        Format format = new SimpleDateFormat(dateFormat);
+        Format format = new SimpleDateFormat(dateFormat, Locale.getDefault());
         return format.format(date);
     }
 

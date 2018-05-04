@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.profile.UserProfile"
             android:label="@string/profile" />
@@ -31,6 +31,7 @@
         <activity android:name=".ui.addTransaction.AddTransactionActivity" />
         <activity
             android:name=".ui.main.MainTabActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

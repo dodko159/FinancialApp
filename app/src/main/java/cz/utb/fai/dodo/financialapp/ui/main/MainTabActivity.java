@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +20,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +38,11 @@ import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 public class MainTabActivity extends AppCompatActivity {
 
     //todo zobrazenie grafu - bud zmensit alebo scrolovat
+
+    /***** CONSTANTS *****/
+    public static boolean isActive = false;
+
+    /***** VARS *****/
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -103,6 +106,7 @@ public class MainTabActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isActive = true;
 
         mAuth.addAuthStateListener(mAuthListener);
         addTransaction.setOnClickListener(addTransClickListener);
@@ -138,6 +142,7 @@ public class MainTabActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        isActive = false;
 
         mAuth.removeAuthStateListener(mAuthListener);
         viewModel.getMonths().removeObservers(this);

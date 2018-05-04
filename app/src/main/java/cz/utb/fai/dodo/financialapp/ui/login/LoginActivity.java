@@ -107,9 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(user != null){
                     pending.set(false);
 
-                    Intent intent = MainTabActivity.startIntent(LoginActivity.this);
-                    startActivity(intent);
-                    finish();
+                    if(!MainTabActivity.isActive){
+                        Intent intent = MainTabActivity.startIntent(LoginActivity.this);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };

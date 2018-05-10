@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mé finance</string>
+    <string name="log_out">Odhlásit</string>
+    <string name="connection_failed">Připojení se nezdařilo</string>
+    <string name="auth_wrong">Ověření se nezdařilo</string>
+    <string name="auth_faild">Ověření se nezdařilo</string>
+    <string name="welcome_back">"Vítejte zpět "</string>
+    <string name="name">Jméno</string>
+    <string name="surname">Příjmení</string>
+    <string name="email">E-mail</string>
+    <string name="save">Uložit</string>
+    <string name="profile">Profil</string>
+    <string name="income">Příjmy</string>
+    <string name="cost">Výdaje</string>
+    <string name="noDataForMonth">Pro tento měsíc nejsou k dispozici žádné údaje</string>
+    <string name="transaction_loading_error">Při načítání transakce došlo k chybě</string>
+    <string name="transactions_loading_error">Při načítání transakcí došlo k chybě</string>
+    <string name="note">Poznámka</string>
+    <string name="date">Datum</string>
+    <string name="title_activity_add_transaction">Přidat transakci</string>
+    <string name="table_add_price">Cena</string>
+    <string name="table_add_category">Kategorie</string>
+    <string name="action_settings">Nastavení</string>
+    <string name="set_price_and_category">Nastavte cenu a vyberte kategorii.</string>
+    <string name="set_price">Nastavte cenu.</string>
+    <string name="select_category">Vyberte kategorii.</string>
+    <string name="add_switch_on">+</string>
+    <string name="add_switch_off">-</string>
+    <string name="enter_description">Zadejte popis</string>
+    <string name="save_completed">Uložení dokončeno.</string>
+    <string name="title_activity_main_tab">MainTabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="no_internet_title">Žádný internet</string>
+    <string name="no_internet_text">Momentálně jste offline. Pokud je to možné, aktivujte svůj internet pro aktualizaci transakcí.</string>
+    <string name="want_delete_title">Smazat transakci?</string>
+    <string name="want_delete_text">Opravdu chcete smazat tuto transakci?</string>
+    <string name="NO">Ne</string>
+    <string name="YES">Ano</string>
+    <string name="TRANSACTION_WILL_BE_DELETE">Transakce bude smazána.</string>
+
+    <string-array
+        name="incomes_array">
+        <item>Jiné</item>
+        <item>Práce</item>
+        <item>Půjčka</item>
+        <item>Výhra</item>
+        <item>Dar</item>
+    </string-array>
+
+    <string-array
+        name="costs_array">
+        <item>Jiné</item>
+        <item>Jídlo</item>
+        <item>Oblečení</item>
+        <item>Cestování</item>
+        <item>Auto</item>
+        <item>Děti</item>
+        <item>Dovolená</item>
+        <item>Domácnost</item>
+        <item>Zábava</item>
+        <item>Služby</item>
+        <item>Zvířata</item>
+        <item>Účty</item>
+        <item>Elektronika</item>
+    </string-array>
+
+    <string name="electronics">Elektronika</string>
+    <string name="bills">Účty</string>
+    <string name="animals">Zvířata</string>
+    <string name="service">Služby</string>
+    <string name="entertainment">Zábava</string>
+    <string name="home">Domácnost</string>
+    <string name="holiday">Dovolená</string>
+    <string name="children">Děti</string>
+    <string name="car">Auto</string>
+    <string name="traveling">"Cestování"</string>
+    <string name="clothes">Oblečení</string>
+    <string name="food">Jídlo</string>
+    <string name="other_cost">Jiné</string>
+    <string name="other_incomes">Jiné</string>
+    <string name="work">Práce</string>
+    <string name="loan">Půjčka</string>
+    <string name="win">Výhra</string>
+</resources>

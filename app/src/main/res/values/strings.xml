@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">My finances</string>
     <string name="log_out">Log out</string>
-    <string name="connection_failed">Connection faild</string>
-    <string name="auth_wrong">Auth faild</string>
-    <string name="auth_faild">Authentication faild</string>
+    <string name="connection_failed">Connection failed</string>
+    <string name="auth_wrong">Auth failed</string>
+    <string name="auth_faild">Authentication failed</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="email">E-mail</string>
     <string name="save">Save</string>
     <string name="profile">Profile</string>
-    <string name="income">Income</string>
-    <string name="cost">Cost</string>
+    <string name="income">Incomes</string>
+    <string name="cost">Costs</string>
     <string name="noDataForMonth">No data available for this month</string>
     <string name="transaction_loading_error">Error while loading transaction</string>
     <string name="transactions_loading_error">Error while loading transactions</string>

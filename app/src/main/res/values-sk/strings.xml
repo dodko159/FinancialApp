@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Moje financie</string>
+    <string name="log_out">Odhlásiť sa</string>
+    <string name="connection_failed">Pripojenie zlyhalo</string>
+    <string name="auth_faild">Overenie zlyhalo</string>
+    <string name="auth_wrong">Overenie zlyhalo</string>
+    <string name="welcome_back">"Vitajte späť "</string>
+    <string name="name">Meno</string>
+    <string name="surname">Priezvisko</string>
+    <string name="email">E-mail</string>
+    <string name="save">Uložiť</string>
+    <string name="profile">Profil</string>
+    <string name="income">Príjmy</string>
+    <string name="cost">Náklady</string>
+    <string name="noDataForMonth">Pre tento mesiac nie sú dostupné žiadne údaje</string>
+    <string name="transaction_loading_error">Chyba pri načítavaní transakcie</string>
+    <string name="transactions_loading_error">Chyba pri načítavaní transakcií</string>
+    <string name="note">Poznámka</string>
+    <string name="date">Dátum</string>
+    <string name="title_activity_add_transaction">Pridať transakciu</string>
+    <string name="table_add_price">Cena</string>
+    <string name="table_add_category">Kategória</string>
+    <string name="action_settings">Nastavenia</string>
+    <string name="set_price_and_category">Nastavte cenu a vyberte kategóriu.</string>
+    <string name="set_price">Nastavte cenu.</string>
+    <string name="select_category">"Vyberte kategóriu. "</string>
+    <string name="add_switch_on">+</string>
+    <string name="add_switch_off">-</string>
+    <string name="enter_description">Zadajte popis</string>
+    <string name="save_completed">Uloženie dokončené.</string>
+    <string name="no_internet_title">Žiadny internet</string>
+    <string name="no_internet_text">Momentálne ste v režime offline. Ak je to možné, aktivujte svoj internet pre aktualizovanie transakcií.</string>
+    <string name="want_delete_title">Odstrániť transakciu?</string>
+    <string name="want_delete_text">Naozaj chcete odstrániť túto transakciu?</string>
+    <string name="NO">Nie</string>
+    <string name="YES">Áno</string>
+    <string name="TRANSACTION_WILL_BE_DELETE">Transakcia sa odstráni.</string>
+
+    <string-array
+        name="incomes_array">
+        <item>Iné</item>
+        <item>Práca</item>
+        <item>Pôžička</item>
+        <item>Výhra</item>
+        <item>Dar</item>
+    </string-array>
+
+    <string-array
+        name="costs_array">
+        <item>Iné</item>
+        <item>Jedlo</item>
+        <item>Oblečenie</item>
+        <item>Cestovanie</item>
+        <item>Auto</item>
+        <item>Deti</item>
+        <item>Dovolenka</item>
+        <item>Domov</item>
+        <item>Zábava</item>
+        <item>Služby</item>
+        <item>Zvieratá</item>
+        <item>Účty</item>
+        <item>Elektronika</item>
+    </string-array>
+
+    <string name="other_incomes">Iné</string>
+    <string name="work">Práca</string>
+    <string name="loan">Pôžička</string>
+    <string name="win">Výhra</string>
+    <string name="other_cost">Iné</string>
+    <string name="food">Jedlo</string>
+    <string name="clothes">Oblečenie</string>
+    <string name="traveling">Cestovanie</string>
+    <string name="car">Auto</string>
+    <string name="children">Deti</string>
+    <string name="holiday">Dovolenka</string>
+    <string name="home">Domov</string>
+    <string name="entertainment">Zábava</string>
+    <string name="service">Služby</string>
+    <string name="animals">Zvieratá</string>
+    <string name="electronics">Elektronika</string>
+    <string name="bills">Účty</string>
+</resources>

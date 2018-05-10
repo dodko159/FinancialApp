@@ -18,9 +18,9 @@ import java.util.List;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.CategoryDetailDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterTransaction;
-import cz.utb.fai.dodo.financialapp.shared.Category;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.adapters.AdapterTransaction;
+import cz.utb.fai.dodo.financialapp.common.Category;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 import cz.utb.fai.dodo.financialapp.ui.detail.transaction.TransactionDetail;
 
 public class CategoryDetail extends AppCompatActivity implements IAdapterItemClicked<Transaction>{

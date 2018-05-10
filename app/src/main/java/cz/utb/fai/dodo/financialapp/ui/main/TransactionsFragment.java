@@ -8,9 +8,7 @@ import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,31 +16,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.TransactionsFragmentDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.PieGraph;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
-import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
+import cz.utb.fai.dodo.financialapp.common.CategorySimple;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.PieGraph;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
+import cz.utb.fai.dodo.financialapp.common.adapters.AdapterCategory;
 import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
 
 /**
@@ -61,8 +51,6 @@ public class TransactionsFragment extends Fragment implements IAdapterItemClicke
     SharedPreferences.OnSharedPreferenceChangeListener sharedListener;
 
     TransactionsFragmentDataBinding fragmentDataBinding;
-
-    private RecyclerView recyclerView;
 
     public TransactionsFragment() {
     }
@@ -129,20 +117,12 @@ public class TransactionsFragment extends Fragment implements IAdapterItemClicke
 
     private void init() {
 
-        recyclerView = fragmentDataBinding.transactionRecycleView;
+        RecyclerView recyclerView = fragmentDataBinding.transactionRecycleView;
 
         //recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         final AdapterCategory adapter = new AdapterCategory(new ArrayList<CategorySimple>(), this);
-/*
-        final Map<Integer, Double> map = viewModel.getPrices().getValue();
-        if (map == null) {
-            adapter.setNewList(new ArrayList<CategorySimple>());
-        }else {
-            adapter.setNewList(CategorySimple.mapToList(map));
-            updatePieView(CategorySimple.mapToList(map));
-        }*/
 
         recyclerView.setAdapter(adapter);
 

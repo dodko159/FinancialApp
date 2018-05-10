@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.databinding.TransactionDetailDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 public class TransactionDetail extends AppCompatActivity {
 

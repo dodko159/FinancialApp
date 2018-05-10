@@ -4,10 +4,10 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
-import cz.utb.fai.dodo.financialapp.shared.Category;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.Category;
+import cz.utb.fai.dodo.financialapp.common.MyDate;
+import cz.utb.fai.dodo.financialapp.common.NumberFormatter;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 07.04.2018.

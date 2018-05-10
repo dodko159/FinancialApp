@@ -23,9 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.shared.User;
 import cz.utb.fai.dodo.financialapp.databinding.LoginDataBinding;
 import cz.utb.fai.dodo.financialapp.ui.main.MainTabActivity;
 
@@ -42,17 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth.AuthStateListener mAuthListener;
     LoginDataBinding activityBinding;
-    public final ObservableBoolean pending = new ObservableBoolean(false);
-
     FirebaseUser user;
-    User me;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public ObservableBoolean pending = new ObservableBoolean(false);
 
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+    /**** LIVECYCLE METHODS ****/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +55,18 @@ public class LoginActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    /*** HELPER METHODS ***/
+
     private void init(){
         signInButton = activityBinding.googleSigninBtn;
         progressBarLayout = activityBinding.progressBarLayout;
-
-        /*TextView textView = (TextView) signInButton.getChildAt(0);
-        textView.setText(R.string.sign_in);*/
 
         activityBinding.setAct(this);
 
@@ -84,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this, R.string.connection_faild,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, R.string.connection_failed,Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -117,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
+    /*** GOOGLE LOGIN ***/
+
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -136,7 +137,6 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 pending.set(false);
                 Toast.makeText(LoginActivity.this, R.string.auth_wrong,Toast.LENGTH_SHORT).show();
-                // ...
             }
         }
     }
@@ -150,18 +150,17 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
 
+                            FirebaseUser user = mAuth.getCurrentUser();
                             DBManager.ckeckUserInDBandSave(user, LoginActivity.this);
 
-                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, R.string.auth_faild,Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+
                         }
-                        // ...
+
                     }
                 });
     }

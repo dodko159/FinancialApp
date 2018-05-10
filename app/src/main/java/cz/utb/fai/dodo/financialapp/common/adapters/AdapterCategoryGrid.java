@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared.adapters;
+package cz.utb.fai.dodo.financialapp.common.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -25,20 +25,13 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
     private IAdapterItemClicked<Integer> listener;
     private Context context;
 
-    /**** CONSTRUCTORS ****/
-
-    public AdapterCategoryGrid(List<String> categories, IAdapterItemClicked<Integer> listener, Context applicationContext) {
-        this.categories = categories;
-        this.listener = listener;
-        this.context = applicationContext;
-    }
+    /**** CONSTRUCTOR ****/
 
     public AdapterCategoryGrid(String[] categories, IAdapterItemClicked<Integer> listener, Context applicationContext) {
         this.categories = Arrays.asList(categories);
         this.listener = listener;
         this.context = applicationContext;
     }
-
 
     /**** MTEHODS ****/
 
@@ -77,11 +70,6 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
         return categories.size();
     }
 
-    public void setNewList(List<String> list){
-        this.categories=list;
-        notifyDataSetChanged();
-    }
-
     public void setNewList(String[] list){
         this.categories=Arrays.asList(list);
         notifyDataSetChanged();
@@ -89,10 +77,10 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
 
      /**** INNER CLASS ****/
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
         TextView catName;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             catName = itemView.findViewById(R.id.textViewGridRecycleViewCategory);
         }

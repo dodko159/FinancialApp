@@ -3,7 +3,6 @@ package cz.utb.fai.dodo.financialapp.ui.main;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +20,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.shared.User;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 24.04.2018.
@@ -40,12 +38,9 @@ public class MainTabViewModel extends AndroidViewModel {
     private DatabaseReference costRef = FirebaseDatabase.getInstance().getReference(Transaction.COSTS);
 
     private MutableLiveData<List<String>> months = new MutableLiveData<>();
-    //private MutableLiveData<List<String>> costsMonths = new MutableLiveData<>();
     private List<String> incomeMoths = new ArrayList<>();
     private List<String> costMonths = new ArrayList<>();
-
     private String userID;
-    private boolean mothsDownloaded = false;
 
     /***** CONSTRUCTOR *****/
     public MainTabViewModel(@NonNull Application application) {
@@ -53,22 +48,17 @@ public class MainTabViewModel extends AndroidViewModel {
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-    }
-
     /***** GETS, SETS ******/
 
-    public void setCostMonths(List<String> costMonths) {
+    private void setCostMonths(List<String> costMonths) {
         this.costMonths = costMonths;
     }
 
-    public void setIncomeMoths(List<String> incomeMoths) {
+    private void setIncomeMoths(List<String> incomeMoths) {
         this.incomeMoths = incomeMoths;
     }
 
-    public MutableLiveData<List<String>> getMonths() {
+    MutableLiveData<List<String>> getMonths() {
         return months;
     }
 

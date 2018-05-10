@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">My financions</string>
+    <string name="app_name">My finances</string>
     <string name="log_out">Log out</string>
-    <string name="connection_faild">Connection faild</string>
+    <string name="connection_failed">Connection faild</string>
     <string name="auth_wrong">Auth faild</string>
     <string name="auth_faild">Authentication faild</string>
-    <string name="sign_in">Sign in</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>

@@ -29,17 +29,16 @@ import java.util.Map;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.PieGraph;
-import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategory;
-import cz.utb.fai.dodo.financialapp.shared.CategorySimple;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.shared.User;
+import cz.utb.fai.dodo.financialapp.common.MyDate;
+import cz.utb.fai.dodo.financialapp.common.PieGraph;
+import cz.utb.fai.dodo.financialapp.common.adapters.AdapterCategory;
+import cz.utb.fai.dodo.financialapp.common.CategorySimple;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
+import cz.utb.fai.dodo.financialapp.common.User;
 import cz.utb.fai.dodo.financialapp.databinding.MainActivityDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
 import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
 import cz.utb.fai.dodo.financialapp.ui.detail.category.CategoryDetail;
-import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 
 public class MainActivity extends AppCompatActivity implements IAdapterItemClicked<CategorySimple>{
 

@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
 import android.support.annotation.NonNull;
 

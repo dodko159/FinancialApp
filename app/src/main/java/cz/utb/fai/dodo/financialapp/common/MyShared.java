@@ -1,10 +1,8 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-
-import java.util.List;
 
 /**
  * Created by Dodo on 27.03.2018.
@@ -12,12 +10,15 @@ import java.util.List;
 
 public class MyShared {
 
+    /**** CONSTANTS ****/
+
     private static final String SHARED = "finShared";
     private static final String USERJSON = "userJson";
+    private static final String INTERNETDIALOG = "internetDialogShown";
     public static final String ISINCOMES = "isInscomes";
-    public static final String INTERNETDIALOG = "internetDialogShown";
 
-    /**** ACCESSOR METHODS *****/
+    /**** METHODS *****/
+
     /**
      * Uklada objekt {@link User} do shared prefs jako json.
      * @param context aktualni context
@@ -47,43 +48,12 @@ public class MyShared {
 
     /***
      *
-     * @param context aktualni kontext
-     * @param key kluc, podla ktoreho ma data ulozit
-     * @param transactions tranzakcie, ktore sa maju ulozit
-     */
-    public static void saveTransactions(@NonNull Context context, String key, String transactions){
-        setString(context, key, transactions);
-    }
-
-
-    //todo skontrolovat a asi zmazat
-    /***
-     * Nacita data z pamäte
-     * @param context aktualny kontext
-     * @param key kluc, podla ktoreho nacita data z pamäti
-     * @return vrati data v podobe mapy < kluc, List< Transaction >> alebo null ak data niesu k dispozicii
-     */
-    public static List<Transaction> loadTransactions(@NonNull Context context, String key) {
-        List<Transaction> myList = null;
-        String transJson = sGetPrefs(context).getString(key,null);
-
-        if(transJson != null){
-           // myList = Transaction.transactionListFromFirebase(transJson);
-        }
-
-        return myList;
-    }
-
-    /***
-     *
      * @param context aktualny kontext
      * @param key kluc, podla ktoreho zmaze data
      */
     public static void clearSharedByKey(@NonNull Context context, String key){
         sGetPrefs(context).edit().remove(key).apply();
     }
-
-    /***** HELPER METHODS *****/
 
     /**
      * Uklada string value na dany klic.
@@ -104,13 +74,23 @@ public class MyShared {
         sGetPrefs(context).edit().putBoolean(ISINCOMES,isIncomes).apply();
     }
 
-    /***
-     * nacita hodnotu z sharedPreferences
-     * @param context kontext
-     * @return boolean ci sa ma nacitat incomes alebo costs
+    /**
+     * Ukladá true alebo false do sharedpreferences pod kluc INTERNETDIALOG
+     * @param context aplikacny kontext
+     * @param shown true ak už bolo dialogove okno zobrazené false pri spustení aplikácie
      */
-    public static boolean getIsIncomes(@NonNull Context context){
-        return sGetPrefs(context).getBoolean(ISINCOMES, false);
+    public static void internetDialogShown(@NonNull Context context, boolean shown) {
+        sGetPrefs(context).edit().putBoolean(INTERNETDIALOG, shown).apply();
+    }
+
+    /**
+     * Nacita zo sharedpreferences, true alebo false podla toho, či už bolo dialogove okno zobrazene
+     * @param context aplikacny kontext
+     * @return true alebo false podla toho, či už bolo dialogove okno zobrazene
+     */
+    @NonNull
+    public static Boolean wasInternetDialogShown(@NonNull Context context){
+        return sGetPrefs(context).getBoolean(INTERNETDIALOG, false);
     }
 
     /***
@@ -120,13 +100,5 @@ public class MyShared {
      */
     public static SharedPreferences sGetPrefs(@NonNull Context context) {
         return context.getSharedPreferences(SHARED, Context.MODE_PRIVATE);
-    }
-
-    public static void internetDialogShown(@NonNull Context context, boolean shown) {
-        sGetPrefs(context).edit().putBoolean(INTERNETDIALOG, shown).apply();
-    }
-
-    public static Boolean wasInternetDialogShown(@NonNull Context context){
-        return sGetPrefs(context).getBoolean(INTERNETDIALOG, false);
     }
 }

@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.User;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 30.03.2018.

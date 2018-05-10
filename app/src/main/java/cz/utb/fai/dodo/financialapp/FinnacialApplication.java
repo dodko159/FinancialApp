@@ -1,13 +1,10 @@
 package cz.utb.fai.dodo.financialapp;
 
 import android.app.Application;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 
 import cz.radovanholik.library.ConnectivityInformer;
-import cz.radovanholik.library.utils.Utils;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
 
 /**
  * Created by Dodo on 27.04.2018.

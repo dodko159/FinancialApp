@@ -6,24 +6,24 @@
     android:background="?android:attr/selectableItemBackground">
 
     <LinearLayout
-    android:id="@+id/listItemLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+        android:id="@+id/listItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
-        <TextView
-            android:id="@+id/textViewCategoryName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewCategoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewPriceSum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
-            android:textSize="18sp" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/textViewPriceSum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:textSize="18sp" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,9 +28,9 @@ import java.util.List;
 import cz.radovanholik.library.utils.Utils;
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.databinding.MainTabDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.adapters.SectionsPagerAdapter;
+import cz.utb.fai.dodo.financialapp.common.MyDate;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.adapters.SectionsPagerAdapter;
 import cz.utb.fai.dodo.financialapp.ui.addTransaction.AddTransactionActivity;
 import cz.utb.fai.dodo.financialapp.ui.profile.UserProfile;
 
@@ -42,17 +41,7 @@ public class MainTabActivity extends AppCompatActivity {
     /***** CONSTANTS *****/
     public static boolean isActive = false;
 
-    /***** VARS *****/
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    /**** VARS ****/
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -152,9 +141,7 @@ public class MainTabActivity extends AppCompatActivity {
 
     void init(List<String> moths){
 
-        // Create the adapter that will return a fragment for each
-        // sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), moths);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), moths);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager.setAdapter(mSectionsPagerAdapter);

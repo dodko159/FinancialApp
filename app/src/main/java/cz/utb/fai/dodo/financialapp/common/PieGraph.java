@@ -1,6 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
-
-import android.graphics.Color;
+package cz.utb.fai.dodo.financialapp.common;
 
 import com.razerdp.widget.animatedpieview.data.IPieInfo;
 

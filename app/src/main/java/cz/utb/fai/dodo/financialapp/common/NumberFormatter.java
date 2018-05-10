@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -11,8 +11,8 @@ import java.util.Locale;
 
 public class NumberFormatter {
 
-    static DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.UK);
-    static DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+    private static DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.UK);
+    private static DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
 
     public static String formateNumber(double number, Character separator){
 

@@ -11,24 +11,19 @@ import android.view.View;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
-import cz.utb.fai.dodo.financialapp.shared.User;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.NumberFormatter;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
+import cz.utb.fai.dodo.financialapp.common.User;
 
 /**
  * Created by Dodo on 24.04.2018.

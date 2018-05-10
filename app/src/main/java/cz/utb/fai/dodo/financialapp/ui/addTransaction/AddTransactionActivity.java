@@ -9,16 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
 import cz.utb.fai.dodo.financialapp.databinding.AddTransactionDataBinding;
-import cz.utb.fai.dodo.financialapp.shared.Category;
-import cz.utb.fai.dodo.financialapp.shared.adapters.AdapterCategoryGrid;
+import cz.utb.fai.dodo.financialapp.common.Category;
+import cz.utb.fai.dodo.financialapp.common.adapters.AdapterCategoryGrid;
 
 public class AddTransactionActivity extends AppCompatActivity implements IAdapterItemClicked<Integer>{
 

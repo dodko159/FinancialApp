@@ -1,18 +1,15 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Dodo on 30.03.2018.
@@ -136,31 +133,6 @@ public class Transaction {
         Type fooType = new TypeToken<List<Transaction>>() {}.getType();
 
         return new Gson().fromJson(trasJson,fooType);
-    }
-
-    // TODO ASI ZNAZAT
-    /***
-     * Prelozi data z Jsonu
-     * @param transJson tranzakcie vo formate Json (String)
-     * @return vrati data v podobe mapy < kluc, List< Transaction >>
-     */
-    public static Map<String, List<Transaction>> transactionMapFromFirebaseJson2(@NonNull String transJson) {
-        Map<String, LinkedTreeMap> myMap;
-        Map<String, List<Transaction>> mapList = new HashMap<>();
-
-        myMap = new Gson().fromJson(transJson, HashMap.class);
-
-        for(Map.Entry<String, LinkedTreeMap> entry : myMap.entrySet()){
-            LinkedTreeMap month = entry.getValue();
-            List transactions = new ArrayList<Transaction>(month.values());
-
-            Type fooType = new TypeToken<List<Transaction>>() {}.getType();
-            List<Transaction> transList = new Gson().fromJson(transactions.toString(),fooType);
-
-            mapList.put(entry.getKey(),transList);
-        }
-
-        return mapList;
     }
 
     /***

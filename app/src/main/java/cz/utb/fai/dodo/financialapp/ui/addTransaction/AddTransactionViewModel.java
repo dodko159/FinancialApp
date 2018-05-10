@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import cz.utb.fai.dodo.financialapp.R;
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 17.04.2018.
@@ -27,14 +27,9 @@ public class AddTransactionViewModel extends AndroidViewModel {
     private String description;
     private String currency;
 
-    private Transaction transaction;
-
-    private Context context;
-
     /**** CONSTRUCTOR ****/
     public AddTransactionViewModel(@NonNull Application application) {
         super(application);
-        this.context = application.getApplicationContext();
 
         priceString = "";
         category = -1;
@@ -58,7 +53,7 @@ public class AddTransactionViewModel extends AndroidViewModel {
         return currency;
     }
 
-    public MutableLiveData<Boolean> getIncomeLive(){
+    MutableLiveData<Boolean> getIncomeLive(){
         return income;
     }
 
@@ -82,7 +77,7 @@ public class AddTransactionViewModel extends AndroidViewModel {
         this.category = category;
     }
 
-    public MutableLiveData<Boolean> getCloseActivity() {
+    MutableLiveData<Boolean> getCloseActivity() {
         return closeActivity;
     }
 
@@ -93,6 +88,8 @@ public class AddTransactionViewModel extends AndroidViewModel {
      * @param v
      */
     public void save(View v){
+
+        Context context = this.getApplication();
 
         double price = 0;
 
@@ -107,7 +104,7 @@ public class AddTransactionViewModel extends AndroidViewModel {
         }else if(price <= 0){
             Toast.makeText(context, R.string.set_price, Toast.LENGTH_SHORT).show();
         }else{
-            transaction = new Transaction(System.currentTimeMillis(), category, price, description);
+            Transaction transaction = new Transaction(System.currentTimeMillis(), category, price, description);
 
             DBManager.saveTransactionToDB(MyShared.getUser(context).getUid(), transaction, income.getValue());
 

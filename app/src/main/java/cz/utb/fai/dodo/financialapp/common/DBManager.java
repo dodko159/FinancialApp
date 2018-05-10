@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -26,13 +26,15 @@ public class DBManager{
     private static final String INCOMES = Transaction.INCOMES;
     private static final String COSTS = Transaction.COSTS;
 
+    /**** VARS ****/
+
     private static DatabaseReference userRef;
     public static DatabaseReference incomeRef;
     public static DatabaseReference costRef;
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    /**** ****/
+    /**** METHODS ****/
 
     /***
      * inicializuje DB
@@ -50,7 +52,7 @@ public class DBManager{
      * Uklada uzivatela do DB
      * @param user uzivatel, ktoreho ma ulozit
      */
-    public static void saveUserToDB(User user){
+    private static void saveUserToDB(User user){
         userRef.child(user.getUid()).setValue(user);
     }
 
@@ -68,16 +70,15 @@ public class DBManager{
      * @return Vrati prihlaseneho uzivatela
      */
     @NonNull
-    public static User loadUserFromAuth(){
+    static User loadUserFromAuth(){
         return new User(firebaseAuth.getCurrentUser());
     }
 
     /***
-     * Skotroluje existenciu uzivatela v databazi
-     * @param user
-     * @return true ak je uzivatel v databazi false ak nieje
+     * Skotroluje existenciu uzivatela v databazi a uloží ho ak tam nieje
+     * @param user firebase užívatel
+     * @param context kontext
      */
-    @NonNull
     public static void ckeckUserInDBandSave(FirebaseUser user, Context context){
 
         final User me = new User(user);
@@ -96,9 +97,7 @@ public class DBManager{
                     saveUserToDB(me);
                     loadedUser = me;
                 }
-
                 MyShared.setUser(con,loadedUser);
-
             }
 
             @Override
@@ -106,13 +105,12 @@ public class DBManager{
                 Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
             }
         });
-
     }
 
     /***
      * Ulozi data do databaze
      * @param userUid id uzivatela
-     * @param transaction tranzkcia, ktora sa ma ulozit
+     * @param transaction transakcia, ktora sa ma ulozit
      * @param income true ak sa jedna on prijem (Incomes) flase ak o vidaj (Costs)
      */
     public static void saveTransactionToDB(String userUid, Transaction transaction, Boolean income){
@@ -132,75 +130,14 @@ public class DBManager{
         ref.setValue(transaction);
     }
 
-    // todo upravit - mozno aj zmazat
-    /***
-     * Nacita tranzakcie s databaze
-     * @param context aktualny kontext
-     * @param userUid id uzivatela
-     * @param selectedMonth mesiac, ktory sa ma stiahnut
-     * @param income true ak sa jedna on prijem (Incomes) flase ak o vidaj (Costs)
-     */
-    public static void loadTransactionsFromDB(@NonNull final Context context, String userUid, String selectedMonth, Boolean income) {
-        DatabaseReference dbRef = incomeRef;
-        String key = INCOMES;
-        if (!income) {
-            dbRef = costRef;
-            key = COSTS;
-        }
-
-        final String key2 = key;
-
-        dbRef.child(userUid).child(selectedMonth).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
-            }
-        });
-    }
-
-    /***
-     * Nacita tranzakcie s databaze
-     * @param context aktualny kontext
-     * @param userUid id uzivatela
-     * @param selectedMonth
-     * @param income true ak sa jedna on prijem (Incomes) flase ak o vidaj (Costs)
-     */
-    public static void loadTransactionsFromDBOld(@NonNull final Context context, String userUid, String selectedMonth, Boolean income) {
-        DatabaseReference dbRef = incomeRef;
-        String key = INCOMES;
-        if (!income) {
-            dbRef = costRef;
-            key = COSTS;
-        }
-
-        final String key2 = key;
-
-        dbRef.child(userUid).child(selectedMonth).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                MyShared.saveTransactions(context, key2, dataSnapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("dbError", "loadPost:onCancelled", databaseError.toException());
-            }
-        });
-    }
-
     /**
      * Zmeaže danú transakciu
      * @param transaction transakcia, ktorú má vymazať
      */
     public static void removeTransaction(String uid, Transaction transaction) {
-        final String date = MyDate.longTimeToMonthYear(transaction.getTransactionDate());
-        final String id = transaction.getUid();
-        final DatabaseReference dbRef;
+        String date = MyDate.longTimeToMonthYear(transaction.getTransactionDate());
+        String transID = transaction.getUid();
+        DatabaseReference dbRef;
 
         if(transaction.getCategory() < Category.OFFSET){
             dbRef = DBManager.incomeRef;
@@ -208,6 +145,6 @@ public class DBManager{
             dbRef = DBManager.costRef;
         }
 
-        dbRef.child(uid).child(date).child(id).removeValue();
+        dbRef.child(uid).child(date).child(transID).removeValue();
     }
 }

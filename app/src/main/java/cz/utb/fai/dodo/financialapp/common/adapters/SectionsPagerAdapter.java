@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared.adapters;
+package cz.utb.fai.dodo.financialapp.common.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

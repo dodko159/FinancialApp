@@ -2,13 +2,12 @@ package cz.utb.fai.dodo.financialapp.ui.profile;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import cz.utb.fai.dodo.financialapp.shared.DBManager;
-import cz.utb.fai.dodo.financialapp.shared.User;
-import cz.utb.fai.dodo.financialapp.shared.MyShared;
+import cz.utb.fai.dodo.financialapp.common.DBManager;
+import cz.utb.fai.dodo.financialapp.common.User;
+import cz.utb.fai.dodo.financialapp.common.MyShared;
 
 /**
  * Created by Dodo on 27.03.2018.
@@ -57,7 +56,7 @@ public class UserProfileViewModel extends AndroidViewModel {
         this.mail = mail;
     }
 
-    /**** ****/
+    /**** METHODS ****/
 
     /***
      * Uozi zmeny do shapred a DB

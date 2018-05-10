@@ -5,8 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 import java.util.List;
 
-import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.NumberFormatter;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 08.04.2018.

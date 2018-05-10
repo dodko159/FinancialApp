@@ -1,4 +1,4 @@
-package cz.utb.fai.dodo.financialapp.shared.adapters;
+package cz.utb.fai.dodo.financialapp.common.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import java.util.List;
 
 import cz.utb.fai.dodo.financialapp.R;
 import cz.utb.fai.dodo.financialapp.common.interfaces.IAdapterItemClicked;
-import cz.utb.fai.dodo.financialapp.shared.MyDate;
-import cz.utb.fai.dodo.financialapp.shared.NumberFormatter;
-import cz.utb.fai.dodo.financialapp.shared.Transaction;
+import cz.utb.fai.dodo.financialapp.common.MyDate;
+import cz.utb.fai.dodo.financialapp.common.NumberFormatter;
+import cz.utb.fai.dodo.financialapp.common.Transaction;
 
 /**
  * Created by Dodo on 13.04.2018.
@@ -72,10 +72,10 @@ public class AdapterTransaction extends RecyclerView.Adapter<AdapterTransaction.
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
         TextView date, price;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.textViewTransactionDate);
             price = itemView.findViewById(R.id.textViewTransactionPrice);

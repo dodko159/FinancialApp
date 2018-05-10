@@ -1,6 +1,5 @@
-package cz.utb.fai.dodo.financialapp.shared;
+package cz.utb.fai.dodo.financialapp.common;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
@@ -98,7 +97,7 @@ public class User {
      * @param userjson uzivatel vo formate Json (String)
      * @return vrati uzivatela
      */
-    public User userFromJson(String userjson) {
+    public void userFromJson(String userjson) {
 
         User user = new Gson().fromJson(userjson,User.class);
 
@@ -107,8 +106,6 @@ public class User {
         this.mail = user.getMail();
         this.uid = user.getUid();
         this.photoUrl = user.getPhotoUrl();
-
-        return user;
     }
 
     @Override

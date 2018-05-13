@@ -63,6 +63,7 @@ public class AddTransactionViewModel extends AndroidViewModel {
 
     public void setIncome(Boolean income) {
         this.income.setValue(income);
+        setCategory(-1);
     }
 
     public String getDescription() {

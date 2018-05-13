@@ -2,6 +2,7 @@ package cz.utb.fai.dodo.financialapp.common.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
     private List<String> categories;
     private IAdapterItemClicked<Integer> listener;
     private Context context;
+    private SparseBooleanArray selectedItems;
+    private int lastPosition = -1;
 
     /**** CONSTRUCTOR ****/
 
@@ -31,6 +34,7 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
         this.categories = Arrays.asList(categories);
         this.listener = listener;
         this.context = applicationContext;
+        selectedItems = new SparseBooleanArray();
     }
 
     /**** MTEHODS ****/
@@ -47,10 +51,15 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
     public void onBindViewHolder(ViewHolder holder, int position) {
         String catName = categories.get(position);
 
-        if(position%2 == 0){
-            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor1));
-        }else{
-            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorGrayPink));
+        if(selectedItems.get(position)){
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor3));
+        }
+        else{
+            if(position%2 == 0){
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor1));
+            }else{
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorGrayPink));
+            }
         }
 
         holder.catName.setText(catName);
@@ -60,7 +69,18 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(!selectedItems.get(pos, false)) {
+                    if(getLastPosition() >= 0){
+                        selectedItems.put(getLastPosition(), false);
+                    }
+                    selectedItems.put(pos, true);
+                }
+
+                setLastPosition(pos);
                 listener.onItemClicked(pos);
+
+                notifyDataSetChanged();
             }
         });
     }
@@ -70,8 +90,18 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
         return categories.size();
     }
 
+    private void setLastPosition(int position){
+        lastPosition = position;
+    }
+
+    private int getLastPosition(){
+        return lastPosition;
+    }
+
     public void setNewList(String[] list){
         this.categories=Arrays.asList(list);
+        selectedItems = new SparseBooleanArray();
+        lastPosition = -1;
         notifyDataSetChanged();
     }
 
@@ -84,5 +114,7 @@ public class AdapterCategoryGrid extends RecyclerView.Adapter<AdapterCategoryGri
             super(itemView);
             catName = itemView.findViewById(R.id.textViewGridRecycleViewCategory);
         }
+
+
     }
 }

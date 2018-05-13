@@ -20,8 +20,6 @@ import cz.utb.fai.dodo.financialapp.common.adapters.AdapterCategoryGrid;
 
 public class AddTransactionActivity extends AppCompatActivity implements IAdapterItemClicked<Integer>{
 
-    //todo nejak zobrazit vybratu kategoriu
-
     private AddTransactionDataBinding addTransactionDataBinding;
     private AddTransactionViewModel viewModel;
 
